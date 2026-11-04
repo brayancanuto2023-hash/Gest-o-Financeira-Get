@@ -3,1092 +3,906 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>brayan.sistemy | Gestão Financeira Igreja GETSÊMANI</title>
+    <title>brayan.sistemy - Igreja GETSÊMANI</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
-                        royal: {
-                            50: '#f0f6ff',
-                            100: '#e0edff',
-                            400: '#3b82f6',
-                            500: '#2563eb',
-                            600: '#1d4ed8',
-                            700: '#1e40af',
-                            800: '#1e3a8a',
-                            900: '#0f172a',
-                            950: '#0a0e17'
-                        },
-                        gold: {
-                            400: '#fbbf24',
-                            500: '#f59e0b',
-                            600: '#d97706'
+                        metal: {
+                            900: '#090D14',
+                            800: '#111827',
+                            700: '#1F2937',
+                            600: '#374151',
+                            border: '#374151'
                         }
                     }
                 }
             }
         }
     </script>
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background: #07090e;
-            color: #f8fafc;
-            overflow-x: hidden;
+            font-family: 'Inter', sans-serif;
+            background-color: #06090e;
+            color: #f3f4f6;
         }
-
-        /* Scrollbar 3D */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #0b0f19; }
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, #3b82f6, #1e3a8a);
-            border-radius: 4px;
-        }
-
-        /* Glassmorphism Luxo */
         .glass-panel {
-            background: linear-gradient(135deg, rgba(15, 23, 42, 0.85) 0%, rgba(10, 14, 23, 0.95) 100%);
+            background: linear-gradient(145deg, rgba(17, 24, 39, 0.9) 0%, rgba(9, 13, 20, 0.95) 100%);
             backdrop-filter: blur(16px);
-            border: 1px solid rgba(59, 130, 246, 0.2);
-            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.8), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
-
-        .glass-gold {
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.12) 0%, rgba(15, 23, 42, 0.9) 100%);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(245, 158, 11, 0.3);
-            box-shadow: 0 15px 35px -10px rgba(245, 158, 11, 0.15), inset 0 1px 1px rgba(254, 243, 199, 0.2);
+        .glass-card {
+            background: rgba(31, 41, 55, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
         }
-
-        .watermark-brand {
-            position: fixed;
-            bottom: 12px;
-            right: 18px;
-            pointer-events: none;
-            z-index: 40;
-            opacity: 0.35;
-            font-weight: 900;
-            font-size: 1.3rem;
-            letter-spacing: 2px;
-            background: linear-gradient(135deg, #60a5fa 0%, #fbbf24 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            user-select: none;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.9));
-        }
-
         .btn-royal-3d {
-            background: linear-gradient(180deg, #3b82f6 0%, #1d4ed8 100%);
-            color: #ffffff;
-            font-weight: 800;
-            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.4);
-            transition: all 0.2s ease-in-out;
+            background: linear-gradient(180deg, #2563eb 0%, #1d4ed8 100%);
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            border: 1px solid #3b82f6;
+            transition: all 0.2s ease;
         }
         .btn-royal-3d:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.4);
         }
-
-        .btn-gold-3d {
-            background: linear-gradient(180deg, #fbbf24 0%, #d97706 100%);
-            color: #0f172a;
-            font-weight: 800;
-            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.5);
-            transition: all 0.2s ease-in-out;
+        .btn-metallic {
+            background: linear-gradient(180deg, #374151 0%, #1f2937 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transition: all 0.2s ease;
         }
-        .btn-gold-3d:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5);
+        .btn-metallic:hover {
+            background: linear-gradient(180deg, #4b5563 0%, #374151 100%);
         }
-
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 7px; height: 7px; }
+        ::-webkit-scrollbar-track { background: #06090e; }
+        ::-webkit-scrollbar-thumb { background: #374151; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #4b5563; }
+        
         @media print {
-            .no-print { display: none !important; }
-            .print-only { display: block !important; }
             body { background: white !important; color: black !important; }
+            #app-container > header, nav, button, .no-print { display: none !important; }
+            .glass-panel { background: white !important; border: 1px solid #ccc !important; box-shadow: none !important; color: black !important; }
+            .text-white, .text-slate-400, .text-slate-300 { color: black !important; }
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between text-slate-100">
+<body class="min-h-screen relative overflow-x-hidden selection:bg-blue-600 selection:text-white">
 
-    <!-- Marca d'água Permanente -->
-    <div class="watermark-brand flex items-center gap-2">
-        <i class="fa-solid fa-shield-halved"></i>
-        <span>brayan.sistemy</span>
+    <!-- MARCA D'ÁGUA PERMANENTE NO CANTO INFERIOR -->
+    <div class="fixed bottom-4 right-5 pointer-events-none z-50 select-none flex items-center gap-2 opacity-50 hover:opacity-100 transition-opacity no-print">
+        <span class="text-[11px] font-mono font-bold tracking-wider text-slate-400 uppercase">Desenvolvido por</span>
+        <span class="px-3 py-1 rounded-lg bg-blue-950/80 border border-blue-500/40 text-blue-400 font-mono font-black text-xs tracking-widest shadow-xl">brayan.sistemy</span>
     </div>
 
-    <!-- ==================== SCREEN DE LOGIN (OVERLAY BLOQUEANTE) ==================== -->
-    <div id="login-overlay" class="fixed inset-0 bg-slate-950/95 backdrop-blur-2xl z-50 flex items-center justify-center p-4">
-        <div class="glass-panel max-w-md w-full p-8 rounded-3xl border border-blue-500/30 shadow-2xl space-y-6 relative overflow-hidden">
-            <div class="absolute -top-12 -right-12 w-32 h-32 bg-blue-600/20 rounded-full blur-2xl pointer-events-none"></div>
+    <!-- TELA OVERLAY DE LOGIN BLOQUEANTE -->
+    <div id="login-overlay" class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-xl p-4">
+        <div class="glass-panel w-full max-w-md p-8 rounded-3xl border border-slate-700/60 relative shadow-2xl space-y-6">
             <div class="text-center space-y-2">
-                <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-blue-700 via-blue-500 to-amber-400 flex items-center justify-center text-white font-black text-3xl mx-auto shadow-lg shadow-blue-500/30 border border-white/20">
-                    G
+                <div class="w-16 h-16 mx-auto mb-3 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/30 border border-white/20">
+                    <i class="fa-solid fa-church text-3xl text-white"></i>
                 </div>
-                <h1 class="text-2xl font-black text-white tracking-wide mt-2">IGREJA GETSÊMANI</h1>
-                <p class="text-xs text-blue-400 font-extrabold uppercase tracking-widest">Sistema Financeiro brayan.sistemy</p>
+                <h1 class="text-2xl font-black text-white tracking-wide">IGREJA GETSÊMANI</h1>
+                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Sistema de Gestão Financeira Church</p>
             </div>
 
-            <!-- Formulário de Login -->
             <form onsubmit="realizarLogin(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-bold text-slate-300 mb-1">Usuário</label>
+                <div class="space-y-1">
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-400">Usuário</label>
                     <div class="relative">
-                        <i class="fa-solid fa-user absolute left-3.5 top-3 text-slate-500 text-sm"></i>
-                        <input type="text" id="login-user" required value="brayan" placeholder="Digite seu usuário" class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500 transition">
+                        <i class="fa-solid fa-user absolute left-3.5 top-3.5 text-slate-500 text-sm"></i>
+                        <input type="text" id="login-user" required placeholder="Seu usuário" class="w-full bg-slate-900/90 border border-slate-700 rounded-xl py-3 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-blue-500 transition">
                     </div>
                 </div>
 
-                <div>
-                    <label class="block text-xs font-bold text-slate-300 mb-1">Senha Segura</label>
+                <div class="space-y-1">
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-400">Senha</label>
                     <div class="relative">
-                        <i class="fa-solid fa-lock absolute left-3.5 top-3 text-slate-500 text-sm"></i>
-                        <input type="password" id="login-pass" required placeholder="Digite sua senha" class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500 transition">
+                        <i class="fa-solid fa-key absolute left-3.5 top-3.5 text-slate-500 text-sm"></i>
+                        <input type="password" id="login-pass" required placeholder="••••••••" class="w-full bg-slate-900/90 border border-slate-700 rounded-xl py-3 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-blue-500 transition">
                     </div>
                 </div>
 
-                <div id="login-error" class="text-xs text-rose-400 font-bold text-center hidden bg-rose-500/10 p-2 rounded-lg border border-rose-500/30">
-                    Credenciais incorretas! Verifique seu usuário e senha.
+                <div id="login-error" class="hidden text-xs text-rose-400 font-bold text-center bg-rose-950/40 py-2.5 rounded-xl border border-rose-800/50">
+                    <i class="fa-solid fa-triangle-exclamation mr-1"></i> Usuário ou senha incorretos!
                 </div>
 
-                <button type="submit" class="w-full btn-royal-3d py-3 rounded-xl text-sm font-extrabold tracking-wide flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-right-to-bracket"></i> Acessar Sistema
+                <button type="submit" class="w-full btn-royal-3d py-3.5 rounded-xl font-bold text-sm tracking-wider text-white uppercase shadow-xl mt-2">
+                    Entrar no Sistema
                 </button>
             </form>
 
-            <div class="flex justify-between items-center text-xs pt-1">
-                <button onclick="openModal('modal-recuperar-senha')" class="text-blue-400 hover:text-blue-300 font-bold flex items-center gap-1">
-                    <i class="fa-solid fa-key"></i> Criar / Trocar Senha
+            <div class="pt-4 border-t border-slate-800/80 text-center space-y-3">
+                <button type="button" onclick="loginQuick('brayan')" class="w-full btn-metallic py-3 rounded-xl text-xs font-bold text-amber-400 flex items-center justify-center gap-2 border border-amber-500/20 hover:border-amber-500/40 transition">
+                    <i class="fa-solid fa-crown text-amber-400"></i> Selecionar Brayan (ADM Geral)
                 </button>
+                <div>
+                    <button type="button" onclick="openModal('modal-recuperar-senha')" class="text-xs text-slate-400 hover:text-blue-400 transition font-medium">
+                        Esqueci / Redefinir Senha
+                    </button>
+                </div>
             </div>
-
-            <div class="relative flex py-1 items-center">
-                <div class="flex-grow border-t border-slate-800"></div>
-                <span class="flex-shrink mx-3 text-[10px] text-slate-500 font-extrabold uppercase">Seleção Rápida de ADM</span>
-                <div class="flex-grow border-t border-slate-800"></div>
-            </div>
-
-            <div>
-                <button onclick="loginQuick('brayan')" class="w-full btn-gold-3d py-3 rounded-xl text-xs font-black flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-crown text-slate-900 text-sm"></i> Brayan (ADM) — Digitar Senha
-                </button>
-            </div>
-            
-            <p class="text-[11px] text-center text-slate-500 font-semibold">
-                Desenvolvido por <strong class="text-slate-300">brayan.sistemy</strong>
-            </p>
         </div>
     </div>
 
-    <!-- ==================== HEADER PRINCIPAL ==================== -->
-    <header class="bg-slate-950/90 border-b border-blue-900/40 sticky top-0 z-30 px-4 py-3 shadow-xl backdrop-blur-md">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-            
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-700 to-amber-400 flex items-center justify-center text-white font-black text-xl shadow-md border border-white/20">
-                    G
+    <!-- ESTRUTURA PRINCIPAL DO SISTEMA -->
+    <div id="app-container" class="min-h-screen flex flex-col">
+        <!-- TOPBAR BARRA SUPERIOR AREJADA -->
+        <header class="glass-panel sticky top-0 z-40 border-b border-slate-800/80 px-6 py-4 flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20 border border-white/20">
+                    <i class="fa-solid fa-church text-xl text-white"></i>
                 </div>
                 <div>
-                    <div class="flex items-center gap-2">
-                        <h1 class="font-black text-lg text-white tracking-wide">IGREJA GETSÊMANI</h1>
-                        <span class="text-[9px] px-2 py-0.5 rounded-full bg-blue-950 text-blue-300 font-bold border border-blue-600/40">Matriz Premium</span>
+                    <h2 class="text-xl font-black tracking-tight text-white flex items-center gap-3">
+                        IGREJA GETSÊMANI 
+                    </h2>
+                    <p class="text-xs text-slate-400 flex items-center gap-3 font-medium mt-0.5">
+                        <span><i class="fa-regular fa-clock text-blue-400"></i> <span id="live-clock">--:--:--</span></span>
+                        <span class="text-slate-600">•</span>
+                        <span><i class="fa-regular fa-calendar text-blue-400"></i> <span id="live-date">---, -- DE ---</span></span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- NAVEGAÇÃO POR JANELAS COM ESPAÇAMENTO EXPANDIDO -->
+            <nav class="hidden xl:flex items-center gap-2 bg-slate-900/90 p-2 rounded-2xl border border-slate-800">
+                <button type="button" onclick="switchTab('dashboard')" id="tab-dashboard" class="nav-btn px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2.5 bg-blue-600 text-white shadow-lg border border-blue-400/40">
+                    <i class="fa-solid fa-chart-pie text-sm"></i> Visão Geral
+                </button>
+                <button type="button" onclick="switchTab('entradas')" id="tab-entradas" class="nav-btn px-4 py-2.5 rounded-xl text-xs font-bold text-slate-400 hover:text-white transition flex items-center gap-2.5">
+                    <i class="fa-solid fa-hand-holding-dollar text-sm"></i> Entradas & Dizimistas
+                </button>
+                <button type="button" onclick="switchTab('saidas')" id="tab-saidas" class="nav-btn px-4 py-2.5 rounded-xl text-xs font-bold text-slate-400 hover:text-white transition flex items-center gap-2.5">
+                    <i class="fa-solid fa-file-invoice-dollar text-sm"></i> Saídas & Contas
+                </button>
+                <button type="button" onclick="switchTab('patrimonio')" id="tab-patrimonio" class="nav-btn px-4 py-2.5 rounded-xl text-xs font-bold text-slate-400 hover:text-white transition flex items-center gap-2.5">
+                    <i class="fa-solid fa-boxes-stacked text-sm"></i> Estoque & Patrimônio
+                </button>
+                <button type="button" onclick="switchTab('prestacao')" id="tab-prestacao" class="nav-btn px-4 py-2.5 rounded-xl text-xs font-bold text-slate-400 hover:text-white transition flex items-center gap-2.5">
+                    <i class="fa-solid fa-display text-sm"></i> Projeção & Contas
+                </button>
+                <button type="button" onclick="switchTab('config')" id="tab-config" class="nav-btn px-4 py-2.5 rounded-xl text-xs font-bold text-slate-400 hover:text-white transition flex items-center gap-2.5">
+                    <i class="fa-solid fa-gear text-amber-400 text-sm"></i> Configurações & Usuários
+                </button>
+            </nav>
+
+            <!-- CONTROLE DE USUÁRIO E LOGOUT -->
+            <div class="flex items-center gap-4">
+                <div class="text-right hidden sm:block">
+                    <div class="text-xs font-black text-white flex items-center justify-end gap-1.5">
+                        <span id="logged-user-name">Brayan</span>
+                        <i id="logged-user-crown" class="fa-solid fa-crown text-amber-400 text-[11px]"></i>
                     </div>
-                    <p class="text-xs text-slate-400">Painel Financeiro Integrado | <span class="text-amber-400 font-bold">brayan.sistemy</span></p>
+                    <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider" id="logged-user-role">Dono & ADM Geral</div>
                 </div>
-            </div>
-
-            <!-- Relógio e Calendário em Tempo Real -->
-            <div class="flex items-center gap-3 bg-slate-900/90 px-4 py-1.5 rounded-xl border border-slate-800 shadow-inner">
-                <i class="fa-regular fa-clock text-blue-400 text-lg"></i>
-                <div class="text-right">
-                    <div id="live-clock" class="font-mono text-base font-black text-white tracking-wider">00:00:00</div>
-                    <div id="live-date" class="text-[10px] text-slate-400 font-bold uppercase">-- / -- / ----</div>
-                </div>
-            </div>
-
-            <!-- Usuário Conectado -->
-            <div class="flex items-center gap-3 bg-slate-900/90 p-1.5 pr-4 rounded-full border border-slate-800">
-                <div id="user-avatar" class="w-8 h-8 rounded-full bg-gradient-to-tr from-amber-400 to-amber-600 text-slate-950 font-black flex items-center justify-center text-sm shadow">
+                <div class="w-10 h-10 rounded-2xl bg-slate-800 border border-slate-700 flex items-center justify-center font-black text-blue-400 shadow-inner text-sm" id="user-avatar">
                     B
                 </div>
-                <div class="text-left">
-                    <div class="text-xs font-black text-white flex items-center gap-1">
-                        <span id="logged-user-name">Brayan</span>
-                        <i id="logged-user-crown" class="fa-solid fa-crown text-amber-400 text-[10px]"></i>
+                <button type="button" onclick="efetuarLogout()" title="Sair do Sistema" class="w-10 h-10 rounded-2xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-rose-400 hover:border-rose-900/50 flex items-center justify-center transition">
+                    <i class="fa-solid fa-power-off text-sm"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- CONTAINER DE CONTEÚDO PRINCIPAL COM MAIS MARGEM -->
+        <main class="flex-1 p-6 lg:p-8 max-w-7xl w-full mx-auto space-y-8">
+
+            <!-- JANELA 1: VISÃO GERAL / DASHBOARD -->
+            <div id="win-dashboard" class="window-content space-y-8">
+                <!-- CARDS KPIS COM AMPLO ESPAÇAMENTO -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- SALDO EM CAIXA VITALÍCIO -->
+                    <div class="glass-panel p-6 rounded-3xl border-l-4 border-l-blue-500 relative overflow-hidden space-y-3">
+                        <div class="flex justify-between items-start">
+                            <span class="text-xs font-bold uppercase tracking-widest text-slate-400">Saldo Atual em Caixa</span>
+                            <div class="p-3 bg-blue-500/10 rounded-2xl text-blue-400 border border-blue-500/20">
+                                <i class="fa-solid fa-vault text-xl"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-3xl font-black text-white tracking-tight" id="kpi-saldo">R$ 0,00</h3>
+                        <p class="text-[11px] text-blue-400 font-semibold flex items-center gap-1">
+                            <i class="fa-solid fa-shield-halved"></i> Acumulado Intacto (Vitalício)
+                        </p>
                     </div>
-                    <div id="logged-user-role" class="text-[10px] text-blue-400 font-bold">Dono & ADM Geral</div>
-                </div>
-                <button onclick="efetuarLogout()" class="ml-2 text-xs bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/30 px-2.5 py-1 rounded-lg transition" title="Sair do Sistema">
-                    <i class="fa-solid fa-power-off"></i> Sair
-                </button>
-            </div>
-        </div>
-    </header>
 
-    <!-- ==================== MENU LATERAL / ABAS COM ÍCONES VISÍVEIS ==================== -->
-    <nav class="bg-slate-950/80 border-b border-slate-800/80 no-print">
-        <div class="max-w-7xl mx-auto px-4 overflow-x-auto">
-            <div class="flex space-x-2 py-3 min-w-max">
-                <button onclick="switchTab('dashboard')" id="tab-dashboard" class="nav-btn active flex items-center gap-2.5 px-4 py-2 rounded-xl text-xs font-extrabold transition text-white bg-blue-600 shadow-lg shadow-blue-600/30 border border-blue-400/40">
-                    <i class="fa-solid fa-chart-line text-sm"></i> Visão Geral
-                </button>
-                <button onclick="switchTab('entradas')" id="tab-entradas" class="nav-btn flex items-center gap-2.5 px-4 py-2 rounded-xl text-xs font-bold transition text-slate-400 hover:text-white hover:bg-slate-900 border border-transparent">
-                    <i class="fa-solid fa-hand-holding-dollar text-sm text-emerald-400"></i> Entradas & Dizimistas
-                </button>
-                <button onclick="switchTab('saidas')" id="tab-saidas" class="nav-btn flex items-center gap-2.5 px-4 py-2 rounded-xl text-xs font-bold transition text-slate-400 hover:text-white hover:bg-slate-900 border border-transparent">
-                    <i class="fa-solid fa-receipt text-sm text-rose-400"></i> Saídas & Contas
-                </button>
-                <button onclick="switchTab('patrimonio')" id="tab-patrimonio" class="nav-btn flex items-center gap-2.5 px-4 py-2 rounded-xl text-xs font-bold transition text-slate-400 hover:text-white hover:bg-slate-900 border border-transparent">
-                    <i class="fa-solid fa-boxes-packing text-sm text-amber-400"></i> Estoque & Patrimônio
-                </button>
-                <button onclick="switchTab('prestacao')" id="tab-prestacao" class="nav-btn flex items-center gap-2.5 px-4 py-2 rounded-xl text-xs font-bold transition text-slate-400 hover:text-white hover:bg-slate-900 border border-transparent">
-                    <i class="fa-solid fa-file-invoice-dollar text-sm text-blue-400"></i> Prestação & Projeção
-                </button>
-                <button onclick="switchTab('config')" id="tab-config" class="nav-btn flex items-center gap-2.5 px-4 py-2 rounded-xl text-xs font-bold transition text-slate-400 hover:text-white hover:bg-slate-900 border border-transparent">
-                    <i class="fa-solid fa-gear text-sm text-slate-300"></i> Configurações & Usuários
-                </button>
-            </div>
-        </div>
-    </nav>
-
-    <!-- ==================== MAIN CONTEÚDO ==================== -->
-    <main class="max-w-7xl mx-auto px-4 py-6 flex-1 w-full space-y-6">
-
-        <!-- ==================== JANELA 1: DASHBOARD ==================== -->
-        <section id="win-dashboard" class="window-content space-y-6">
-            
-            <!-- Cards de KPI 3D ZERADOS -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                <div class="glass-panel rounded-2xl p-5 relative overflow-hidden border border-emerald-500/20">
-                    <div class="absolute -right-2 -bottom-2 text-emerald-500/10 text-7xl"><i class="fa-solid fa-circle-arrow-down"></i></div>
-                    <p class="text-[11px] font-black text-slate-400 uppercase tracking-wider">Entradas do Mês</p>
-                    <h3 id="kpi-entradas" class="text-3xl font-black text-white mt-1">R$ 0,00</h3>
-                    <p class="text-[11px] text-emerald-400 mt-2 font-bold flex items-center gap-1"><i class="fa-solid fa-chart-line"></i> Fluxo Inicial Zerado</p>
-                </div>
-
-                <div class="glass-panel rounded-2xl p-5 relative overflow-hidden border border-rose-500/20">
-                    <div class="absolute -right-2 -bottom-2 text-rose-500/10 text-7xl"><i class="fa-solid fa-circle-arrow-up"></i></div>
-                    <p class="text-[11px] font-black text-slate-400 uppercase tracking-wider">Saídas do Mês</p>
-                    <h3 id="kpi-saidas" class="text-3xl font-black text-slate-200 mt-1">R$ 0,00</h3>
-                    <p class="text-[11px] text-rose-400 mt-2 font-bold flex items-center gap-1"><i class="fa-solid fa-arrow-down-long"></i> Sem Despesas Registradas</p>
-                </div>
-
-                <div class="glass-gold rounded-2xl p-5 relative overflow-hidden">
-                    <div class="absolute -right-2 -bottom-2 text-amber-500/10 text-7xl"><i class="fa-solid fa-vault"></i></div>
-                    <div class="flex justify-between items-start">
-                        <p class="text-[11px] font-black text-amber-300 uppercase tracking-wider">Saldo Atual em Caixa</p>
-                        <span class="text-[9px] bg-amber-400 text-slate-950 font-black px-2 py-0.5 rounded shadow">Vitalício</span>
+                    <!-- ENTRADAS DO MÊS -->
+                    <div class="glass-panel p-6 rounded-3xl border-l-4 border-l-emerald-500 relative overflow-hidden space-y-3">
+                        <div class="flex justify-between items-start">
+                            <span class="text-xs font-bold uppercase tracking-widest text-slate-400">Entradas do Mês</span>
+                            <div class="p-3 bg-emerald-500/10 rounded-2xl text-emerald-400 border border-emerald-500/20">
+                                <i class="fa-solid fa-arrow-trend-up text-xl"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-3xl font-black text-emerald-400 tracking-tight" id="kpi-entradas">R$ 0,00</h3>
+                        <p class="text-[11px] text-slate-400 font-semibold">Fluxo de Arrecadação Mensal</p>
                     </div>
-                    <h3 id="kpi-saldo" class="text-3xl font-black text-white mt-1">R$ 0,00</h3>
-                    <p class="text-[11px] text-amber-200/70 mt-2 font-medium">Saldo Mantido Intacto em Viradas</p>
+
+                    <!-- SAÍDAS DO MÊS -->
+                    <div class="glass-panel p-6 rounded-3xl border-l-4 border-l-rose-500 relative overflow-hidden space-y-3">
+                        <div class="flex justify-between items-start">
+                            <span class="text-xs font-bold uppercase tracking-widest text-slate-400">Saídas do Mês</span>
+                            <div class="p-3 bg-rose-500/10 rounded-2xl text-rose-400 border border-rose-500/20">
+                                <i class="fa-solid fa-arrow-trend-down text-xl"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-3xl font-black text-rose-400 tracking-tight" id="kpi-saidas">R$ 0,00</h3>
+                        <p class="text-[11px] text-slate-400 font-semibold">Despesas & Manutenções</p>
+                    </div>
+
+                    <!-- PATRIMÔNIO TOTAL -->
+                    <div class="glass-panel p-6 rounded-3xl border-l-4 border-l-amber-500 relative overflow-hidden space-y-3">
+                        <div class="flex justify-between items-start">
+                            <span class="text-xs font-bold uppercase tracking-widest text-slate-400">Patrimônio Avaliado</span>
+                            <div class="p-3 bg-amber-500/10 rounded-2xl text-amber-400 border border-amber-500/20">
+                                <i class="fa-solid fa-boxes-packing text-xl"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-3xl font-black text-amber-400 tracking-tight" id="kpi-patrimonio">R$ 0,00</h3>
+                        <p class="text-[11px] text-slate-400 font-semibold"><span id="kpi-patrimonio-qtd" class="text-amber-400 font-bold">0</span> Equipamentos Cadastrados</p>
+                    </div>
                 </div>
 
-                <div class="glass-panel rounded-2xl p-5 relative overflow-hidden border border-blue-500/20">
-                    <div class="absolute -right-2 -bottom-2 text-blue-500/10 text-7xl"><i class="fa-solid fa-landmark"></i></div>
-                    <p class="text-[11px] font-black text-slate-400 uppercase tracking-wider">Patrimônio Avaliado</p>
-                    <h3 id="kpi-patrimonio" class="text-3xl font-black text-slate-200 mt-1">R$ 0,00</h3>
-                    <p class="text-[11px] text-blue-400 mt-2 font-bold"><span id="kpi-patrimonio-qtd" class="text-white">0</span> equipamentos cadastrados</p>
-                </div>
-            </div>
+                <!-- GRÁFICOS VISUAIS -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="glass-panel p-6 rounded-3xl lg:col-span-2 space-y-4">
+                        <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+                            <h4 class="font-bold text-white text-sm uppercase tracking-wider flex items-center gap-2">
+                                <i class="fa-solid fa-chart-column text-blue-400"></i> Comparativo de Arrecadação Mensal
+                            </h4>
+                            <span class="text-xs text-slate-400 font-semibold">Visual Interativo</span>
+                        </div>
+                        <div class="h-72 w-full relative">
+                            <canvas id="chartFluxo"></canvas>
+                        </div>
+                    </div>
 
-            <!-- FILTRO AVANÇADO GLOBAL NA VISÃO GERAL -->
-            <div class="glass-panel p-4 rounded-2xl flex flex-wrap gap-3 items-center justify-between border border-slate-800">
-                <div class="flex items-center gap-2 text-xs font-bold text-slate-300">
-                    <i class="fa-solid fa-filter text-blue-400"></i> Filtro de Pesquisa Global:
+                    <div class="glass-panel p-6 rounded-3xl space-y-4">
+                        <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+                            <h4 class="font-bold text-white text-sm uppercase tracking-wider flex items-center gap-2">
+                                <i class="fa-solid fa-chart-pie text-rose-400"></i> Categorias de Despesas
+                            </h4>
+                        </div>
+                        <div class="h-72 w-full relative">
+                            <canvas id="chartDespesas"></canvas>
+                        </div>
+                    </div>
                 </div>
-                <div class="flex flex-wrap gap-2 items-center text-xs flex-1 max-w-2xl">
-                    <input type="text" id="dash-search" oninput="renderAll()" placeholder="Buscar lançamentos por descrição ou nome..." class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-white focus:outline-none focus:border-blue-500">
-                    <input type="date" id="dash-date-start" onchange="renderAll()" class="bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-slate-300">
-                    <span class="text-slate-500">até</span>
-                    <input type="date" id="dash-date-end" onchange="renderAll()" class="bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-slate-300">
-                </div>
-            </div>
 
-            <!-- Gráficos de Altos e Baixos -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="lg:col-span-2 glass-panel rounded-2xl p-5 border border-slate-800 shadow-xl">
-                    <div class="flex items-center justify-between mb-4">
-                        <h4 class="font-black text-white text-sm flex items-center gap-2">
-                            <i class="fa-solid fa-chart-column text-blue-400"></i> Desempenho Financeiro
+                <!-- TABELA DE LANÇAMENTOS RECENTES COM FILTRO DE BUSCA -->
+                <div class="glass-panel p-6 rounded-3xl space-y-5">
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-2 border-b border-slate-800">
+                        <h4 class="font-bold text-white text-sm uppercase tracking-wider flex items-center gap-2">
+                            <i class="fa-solid fa-list-check text-blue-400"></i> Últimas Movimentações
                         </h4>
-                        <span class="text-xs text-slate-400 font-bold">Entradas x Saídas</span>
+                        <div class="w-full sm:w-auto">
+                            <input type="text" id="dash-search" onkeyup="renderRecentTransactions()" placeholder="Buscar lançamentos..." class="w-full sm:w-72 bg-slate-900 border border-slate-700 rounded-xl py-2 px-4 text-xs text-white focus:outline-none focus:border-blue-500">
+                        </div>
                     </div>
-                    <div class="h-64">
-                        <canvas id="chartFluxo"></canvas>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-slate-900/80 text-slate-400 uppercase font-bold border-b border-slate-800">
+                                <tr>
+                                    <th class="px-4 py-3.5">Data</th>
+                                    <th class="px-4 py-3.5">Tipo</th>
+                                    <th class="px-4 py-3.5">Área Ministerial</th>
+                                    <th class="px-4 py-3.5">Descrição / Origem</th>
+                                    <th class="px-4 py-3.5 text-right">Valor</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dash-recent-tbody" class="divide-y divide-slate-800/60">
+                                <tr><td colspan="5" class="px-4 py-6 text-center text-slate-500 italic">Nenhum lançamento registrado no caixa.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- JANELA 2: ENTRADAS & DIZIMISTAS -->
+            <div id="win-entradas" class="window-content space-y-8 hidden">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 glass-panel p-6 rounded-3xl">
+                    <div>
+                        <h3 class="text-xl font-black text-white flex items-center gap-3">
+                            <i class="fa-solid fa-hand-holding-dollar text-emerald-400"></i> Entradas & Dízimos
+                        </h3>
+                        <p class="text-xs text-slate-400 mt-1">Lançamentos de dízimos e ofertas com sigilo garantido.</p>
+                    </div>
+                    <button type="button" onclick="openModal('modal-entrada')" class="btn-royal-3d px-5 py-3 rounded-xl font-bold text-xs flex items-center gap-2 text-white">
+                        <i class="fa-solid fa-plus"></i> Nova Entrada
+                    </button>
+                </div>
+
+                <!-- BARRA DE FILTROS DA TABELA -->
+                <div class="glass-panel p-5 rounded-3xl grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">Área Ministerial</label>
+                        <select id="filter-entrada-area" onchange="renderEntradasTable()" class="w-full bg-slate-900 border border-slate-700 rounded-xl py-2 px-3 text-xs text-white focus:outline-none">
+                            <option value="TODAS">Todas as Áreas</option>
+                            <option value="Geral">Geral / Cultos</option>
+                            <option value="Jovens">Ministério de Jovens</option>
+                            <option value="Kids">Ministério Infantil (Kids)</option>
+                            <option value="Louvor">Ministério de Louvor</option>
+                            <option value="Missões">Missões & Evangelismo</option>
+                            <option value="Eventos">Eventos & Conferências</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">Tipo de Registro</label>
+                        <select id="filter-entrada-tipo" onchange="renderEntradasTable()" class="w-full bg-slate-900 border border-slate-700 rounded-xl py-2 px-3 text-xs text-white focus:outline-none">
+                            <option value="TODOS">Todos os Tipos</option>
+                            <option value="Dízimo">Dízimos</option>
+                            <option value="Oferta">Ofertas</option>
+                            <option value="Evento">Arrecadação de Eventos</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">Buscar Nome / Obs</label>
+                        <input type="text" id="filter-entrada-search" onkeyup="renderEntradasTable()" placeholder="Pesquisar..." class="w-full bg-slate-900 border border-slate-700 rounded-xl py-2 px-3 text-xs text-white focus:outline-none">
                     </div>
                 </div>
 
-                <div class="glass-panel rounded-2xl p-5 border border-slate-800 shadow-xl">
-                    <div class="flex items-center justify-between mb-4">
-                        <h4 class="font-black text-white text-sm flex items-center gap-2">
-                            <i class="fa-solid fa-chart-pie text-amber-400"></i> Categorias de Gastos
-                        </h4>
-                        <span class="text-xs text-slate-400 font-bold">Plano de Contas</span>
+                <div class="glass-panel p-6 rounded-3xl overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-slate-900/80 text-slate-400 uppercase font-bold border-b border-slate-800">
+                                <tr>
+                                    <th class="px-4 py-3.5">Data</th>
+                                    <th class="px-4 py-3.5">Tipo</th>
+                                    <th class="px-4 py-3.5">Área Ministerial</th>
+                                    <th class="px-4 py-3.5">Dizimista / Ofertante</th>
+                                    <th class="px-4 py-3.5">Observação</th>
+                                    <th class="px-4 py-3.5 text-right">Valor</th>
+                                    <th class="px-4 py-3.5 text-center">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="entradas-tbody" class="divide-y divide-slate-800/60">
+                                <tr><td colspan="7" class="px-4 py-6 text-center text-slate-500 italic">Nenhuma entrada cadastrada.</td></tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="h-64 flex items-center justify-center">
-                        <canvas id="chartDespesas"></canvas>
+                </div>
+            </div>
+
+            <!-- JANELA 3: SAÍDAS & PLANO DE CONTAS -->
+            <div id="win-saidas" class="window-content space-y-8 hidden">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 glass-panel p-6 rounded-3xl">
+                    <div>
+                        <h3 class="text-xl font-black text-white flex items-center gap-3">
+                            <i class="fa-solid fa-file-invoice-dollar text-rose-400"></i> Saídas & Contas
+                        </h3>
+                        <p class="text-xs text-slate-400 mt-1">Plano de contas de Luz, Água, Internet e despesas gerais.</p>
+                    </div>
+                    <button type="button" onclick="openModal('modal-saida')" class="btn-royal-3d px-5 py-3 rounded-xl font-bold text-xs flex items-center gap-2 text-white bg-rose-600 hover:bg-rose-500">
+                        <i class="fa-solid fa-plus"></i> Nova Saída
+                    </button>
+                </div>
+
+                <div class="glass-panel p-5 rounded-3xl grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">Categoria da Conta</label>
+                        <select id="filter-saida-cat" onchange="renderSaidasTable()" class="w-full bg-slate-900 border border-slate-700 rounded-xl py-2 px-3 text-xs text-white focus:outline-none">
+                            <option value="TODAS">Todas as Categorias</option>
+                            <option value="Conta de Luz">Conta de Luz</option>
+                            <option value="Conta de Água">Conta de Água</option>
+                            <option value="Internet / Telefone">Internet / Telefone</option>
+                            <option value="Aluguel do Templo">Aluguel do Templo</option>
+                            <option value="Manutenção & Reformas">Manutenção & Reformas</option>
+                            <option value="Compra de Equipamentos">Compra de Equipamentos</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">Buscar por Descrição</label>
+                        <input type="text" id="filter-saida-search" onkeyup="renderSaidasTable()" placeholder="Pesquisar despesas..." class="w-full bg-slate-900 border border-slate-700 rounded-xl py-2 px-3 text-xs text-white focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-3xl overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-slate-900/80 text-slate-400 uppercase font-bold border-b border-slate-800">
+                                <tr>
+                                    <th class="px-4 py-3.5">Data</th>
+                                    <th class="px-4 py-3.5">Categoria</th>
+                                    <th class="px-4 py-3.5">Área Ministerial</th>
+                                    <th class="px-4 py-3.5">Descrição</th>
+                                    <th class="px-4 py-3.5">Patrimônio?</th>
+                                    <th class="px-4 py-3.5 text-right">Valor</th>
+                                    <th class="px-4 py-3.5 text-center">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="saidas-tbody" class="divide-y divide-slate-800/60">
+                                <tr><td colspan="7" class="px-4 py-6 text-center text-slate-500 italic">Nenhuma saída cadastrada.</td></tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
 
-            <!-- Tabela Recente -->
-            <div class="glass-panel rounded-2xl p-5 border border-slate-800 shadow-xl">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="font-black text-white text-sm flex items-center gap-2">
-                        <i class="fa-solid fa-clock-rotate-left text-blue-400"></i> Últimas Movimentações
-                    </h3>
-                    <button onclick="switchTab('entradas')" class="text-xs text-blue-400 hover:text-blue-300 font-bold">Ver Todas</button>
+            <!-- JANELA 4: ESTOQUE & PATRIMÔNIO -->
+            <div id="win-patrimonio" class="window-content space-y-8 hidden">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 glass-panel p-6 rounded-3xl">
+                    <div>
+                        <h3 class="text-xl font-black text-white flex items-center gap-3">
+                            <i class="fa-solid fa-boxes-stacked text-amber-400"></i> Estoque & Patrimônio
+                        </h3>
+                        <p class="text-xs text-slate-400 mt-1">Inventário completo de equipamentos com tombamento e Nº de série.</p>
+                    </div>
+                    <button type="button" onclick="openModal('modal-patrimonio')" class="btn-royal-3d px-5 py-3 rounded-xl font-bold text-xs flex items-center gap-2 text-white">
+                        <i class="fa-solid fa-box-archive"></i> Tombar Equipamento
+                    </button>
                 </div>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-xs text-left text-slate-300">
-                        <thead class="uppercase bg-slate-900/90 text-slate-400 font-black border-b border-slate-800">
-                            <tr>
-                                <th class="px-4 py-3">Data</th>
-                                <th class="px-4 py-3">Tipo</th>
-                                <th class="px-4 py-3">Área Ministerial</th>
-                                <th class="px-4 py-3">Descrição / Origem</th>
-                                <th class="px-4 py-3 text-right">Valor</th>
-                            </tr>
-                        </thead>
-                        <tbody id="dash-recent-tbody" class="divide-y divide-slate-800/80">
-                            <!-- Injetado por JS -->
-                        </tbody>
-                    </table>
+
+                <div class="glass-panel p-5 rounded-3xl">
+                    <input type="text" id="filter-pat-search" onkeyup="renderPatrimonioTable()" placeholder="Buscar por Nome do Item, Tombamento (ex: GETS-001) ou Nº de Série..." class="w-full bg-slate-900 border border-slate-700 rounded-xl py-2.5 px-4 text-xs text-white focus:outline-none">
                 </div>
-            </div>
-        </section>
 
-        <!-- ==================== JANELA 2: ENTRADAS & DIZIMISTAS ==================== -->
-        <section id="win-entradas" class="window-content hidden space-y-6">
-            
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 glass-panel p-5 rounded-2xl border border-slate-800">
-                <div>
-                    <h2 class="text-xl font-black text-white flex items-center gap-2">
-                        <i class="fa-solid fa-hand-holding-dollar text-emerald-400"></i> Entradas & Dizimistas
-                    </h2>
-                    <p class="text-xs text-slate-400">Ofertas mantidas anônimas. Dízimos sob sigilo restrito.</p>
-                </div>
-                <button onclick="openModal('modal-entrada')" class="btn-royal-3d font-extrabold px-5 py-2.5 rounded-xl text-xs flex items-center gap-2">
-                    <i class="fa-solid fa-plus"></i> Nova Entrada
-                </button>
-            </div>
-
-            <!-- BARRA DE FILTROS AVANÇADOS DA TABELA DE ENTRADAS -->
-            <div class="glass-panel p-4 rounded-2xl flex flex-wrap gap-3 items-center justify-between border border-slate-800">
-                <div class="flex flex-wrap gap-2 items-center text-xs flex-1">
-                    <span class="font-bold text-slate-300"><i class="fa-solid fa-magnifying-glass text-blue-400"></i> Filtros:</span>
-                    <input type="text" id="filter-entrada-search" oninput="renderEntradasTable()" placeholder="Buscar por dizimista/obs..." class="bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-white focus:outline-none focus:border-blue-500 text-xs">
-                    
-                    <select id="filter-entrada-area" onchange="renderEntradasTable()" class="bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-slate-200 text-xs">
-                        <option value="TODAS">Todas as Áreas</option>
-                        <option value="Geral">Culto Geral</option>
-                        <option value="Jovens">Jovens</option>
-                        <option value="Kids">Kids</option>
-                        <option value="Missões">Missões</option>
-                        <option value="Louvor">Louvor</option>
-                        <option value="Eventos">Eventos</option>
-                    </select>
-
-                    <select id="filter-entrada-tipo" onchange="renderEntradasTable()" class="bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-slate-200 text-xs">
-                        <option value="TODOS">Todos os Tipos</option>
-                        <option value="Dízimo">Dízimos</option>
-                        <option value="Oferta">Ofertas</option>
-                        <option value="Doação Especial">Doações</option>
-                        <option value="Evento / Cantina">Eventos</option>
-                    </select>
+                <div class="glass-panel p-6 rounded-3xl overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-slate-900/80 text-slate-400 uppercase font-bold border-b border-slate-800">
+                                <tr>
+                                    <th class="px-4 py-3.5">Código</th>
+                                    <th class="px-4 py-3.5">Item / Equipamento</th>
+                                    <th class="px-4 py-3.5">Nº de Série</th>
+                                    <th class="px-4 py-3.5">Localização</th>
+                                    <th class="px-4 py-3.5 text-center">Qtd</th>
+                                    <th class="px-4 py-3.5 text-right">Valor Unit.</th>
+                                    <th class="px-4 py-3.5 text-right">Total</th>
+                                    <th class="px-4 py-3.5 text-center">NF</th>
+                                    <th class="px-4 py-3.5 text-center">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="patrimonio-tbody" class="divide-y divide-slate-800/60">
+                                <tr><td colspan="9" class="px-4 py-6 text-center text-slate-500 italic">Nenhum equipamento tombado.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
-            <!-- Tabela de Entradas -->
-            <div class="glass-panel rounded-2xl border border-slate-800 overflow-hidden shadow-xl">
-                <div class="overflow-x-auto">
-                    <table class="w-full text-xs text-left text-slate-300">
-                        <thead class="uppercase bg-slate-900/90 text-slate-400 font-black border-b border-slate-800">
-                            <tr>
-                                <th class="px-4 py-3">Data</th>
-                                <th class="px-4 py-3">Tipo</th>
-                                <th class="px-4 py-3">Área Ministerial</th>
-                                <th class="px-4 py-3">Ofertante / Dizimista</th>
-                                <th class="px-4 py-3">Observação</th>
-                                <th class="px-4 py-3 text-right">Valor</th>
-                                <th class="px-4 py-3 text-center">Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody id="entradas-tbody" class="divide-y divide-slate-800/80">
-                            <!-- Preenchido via JS -->
-                        </tbody>
-                    </table>
+            <!-- JANELA 5: PRESTAÇÃO DE CONTAS & PROJEÇÃO -->
+            <div id="win-prestacao" class="window-content space-y-8 hidden">
+                <div class="glass-panel p-8 rounded-3xl text-center space-y-3">
+                    <span class="px-4 py-1.5 bg-blue-950 text-blue-300 font-bold text-xs rounded-full border border-blue-500/40 inline-flex items-center gap-2">
+                        <i class="fa-solid fa-desktop"></i> Modo Projeção Visual para Assembleia
+                    </span>
+                    <h2 class="text-3xl font-black text-white">IGREJA GETSÊMANI</h2>
+                    <p class="text-xs text-slate-400 max-w-xl mx-auto">Relatório simplificado e transparente de gestão financeira mensal.</p>
                 </div>
-            </div>
-        </section>
 
-        <!-- ==================== JANELA 3: SAÍDAS & CONTAS ==================== -->
-        <section id="win-saidas" class="window-content hidden space-y-6">
-            
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 glass-panel p-5 rounded-2xl border border-slate-800">
-                <div>
-                    <h2 class="text-xl font-black text-white flex items-center gap-2">
-                        <i class="fa-solid fa-receipt text-rose-400"></i> Saídas & Plano de Contas
-                    </h2>
-                    <p class="text-xs text-slate-400">Gerenciamento de contas de Luz, Água, Internet e Equipamentos.</p>
-                </div>
-                <button onclick="openModal('modal-saida')" class="bg-rose-600 hover:bg-rose-500 text-white font-extrabold px-5 py-2.5 rounded-xl text-xs flex items-center gap-2 shadow-lg shadow-rose-600/30">
-                    <i class="fa-solid fa-plus"></i> Registrar Saída
-                </button>
-            </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="glass-panel p-8 rounded-3xl text-center space-y-3 border-t-4 border-t-emerald-500">
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">1. ARRECADAMOS NO MÊS (X)</p>
+                        <h3 class="text-4xl font-black text-emerald-400" id="report-arrecadado">R$ 0,00</h3>
+                        <p class="text-[11px] text-slate-500 font-medium">Dízimos, Ofertas e Contribuições</p>
+                    </div>
 
-            <!-- BARRA DE FILTROS AVANÇADOS DE SAÍDAS -->
-            <div class="glass-panel p-4 rounded-2xl flex flex-wrap gap-3 items-center justify-between border border-slate-800">
-                <div class="flex flex-wrap gap-2 items-center text-xs flex-1">
-                    <span class="font-bold text-slate-300"><i class="fa-solid fa-magnifying-glass text-rose-400"></i> Filtros:</span>
-                    <input type="text" id="filter-saida-search" oninput="renderSaidasTable()" placeholder="Buscar por descrição..." class="bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-white focus:outline-none focus:border-rose-500 text-xs">
-                    
-                    <select id="filter-saida-cat" onchange="renderSaidasTable()" class="bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-slate-200 text-xs">
-                        <option value="TODAS">Todas as Categorias</option>
-                        <option value="Conta de Luz">Conta de Luz</option>
-                        <option value="Conta de Água">Conta de Água</option>
-                        <option value="Internet / Telefone">Internet / Telefone</option>
-                        <option value="Aluguel / Imóvel">Aluguel / Imóvel</option>
-                        <option value="Equipamentos & Materiais">Equipamentos & Materiais</option>
-                    </select>
-                </div>
-            </div>
+                    <div class="glass-panel p-8 rounded-3xl text-center space-y-3 border-t-4 border-t-rose-500">
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">2. GASTAMOS NO MÊS (Y)</p>
+                        <h3 class="text-4xl font-black text-rose-400" id="report-gastos">R$ 0,00</h3>
+                        <p class="text-[11px] text-slate-500 font-medium">Despesas Fixas e Manutenção</p>
+                    </div>
 
-            <!-- Tabela de Saídas -->
-            <div class="glass-panel rounded-2xl border border-slate-800 overflow-hidden shadow-xl">
-                <div class="overflow-x-auto">
-                    <table class="w-full text-xs text-left text-slate-300">
-                        <thead class="uppercase bg-slate-900/90 text-slate-400 font-black border-b border-slate-800">
-                            <tr>
-                                <th class="px-4 py-3">Data</th>
-                                <th class="px-4 py-3">Categoria</th>
-                                <th class="px-4 py-3">Área Ministerial</th>
-                                <th class="px-4 py-3">Descrição da Despesa</th>
-                                <th class="px-4 py-3">Patrimônio?</th>
-                                <th class="px-4 py-3 text-right">Valor</th>
-                                <th class="px-4 py-3 text-center">Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody id="saidas-tbody" class="divide-y divide-slate-800/80">
-                            <!-- Preenchido via JS -->
-                        </tbody>
-                    </table>
+                    <div class="glass-panel p-8 rounded-3xl text-center space-y-3 border-t-4 border-t-blue-500">
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">3. SOBROU NO FLUXO (W)</p>
+                        <h3 class="text-4xl font-black text-blue-400" id="report-sobra">R$ 0,00</h3>
+                        <p class="text-[11px] text-slate-500 font-medium">Resultado do Período</p>
+                    </div>
                 </div>
-            </div>
-        </section>
 
-        <!-- ==================== JANELA 4: ESTOQUE & PATRIMÔNIO ==================== -->
-        <section id="win-patrimonio" class="window-content hidden space-y-6">
-            
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 glass-panel p-5 rounded-2xl border border-slate-800">
-                <div>
-                    <h2 class="text-xl font-black text-white flex items-center gap-2">
-                        <i class="fa-solid fa-boxes-packing text-amber-400"></i> Estoque & Patrimônio
-                    </h2>
-                    <p class="text-xs text-slate-400">Tombamento de equipamentos com Nº de Série, Local e Foto da Nota Fiscal.</p>
-                </div>
-                <div class="flex items-center gap-3">
-                    <button onclick="openModal('modal-patrimonio')" class="btn-gold-3d font-extrabold px-5 py-2.5 rounded-xl text-xs flex items-center gap-2">
-                        <i class="fa-solid fa-plus"></i> Cadastrar no Patrimônio
+                <div class="text-center pt-4 no-print">
+                    <button type="button" onclick="window.print()" class="btn-metallic px-8 py-3.5 rounded-xl font-bold text-xs text-white inline-flex items-center gap-2">
+                        <i class="fa-solid fa-file-pdf text-amber-400 text-sm"></i> Gerar PDF / Imprimir Relatório Limpo
                     </button>
                 </div>
             </div>
 
-            <!-- FILTRO AVANÇADO PATRIMÔNIO -->
-            <div class="glass-panel p-4 rounded-2xl flex flex-wrap gap-3 items-center justify-between border border-slate-800">
-                <div class="flex flex-wrap gap-2 items-center text-xs flex-1">
-                    <span class="font-bold text-slate-300"><i class="fa-solid fa-magnifying-glass text-amber-400"></i> Buscar Item:</span>
-                    <input type="text" id="filter-pat-search" oninput="renderPatrimonioTable()" placeholder="Buscar por código, nome, número de série..." class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-white focus:outline-none focus:border-amber-500 text-xs">
-                </div>
-            </div>
+            <!-- JANELA 6: CONFIGURAÇÕES & USUÁRIOS -->
+            <div id="win-config" class="window-content space-y-8 hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
-            <!-- Tabela de Patrimônio -->
-            <div class="glass-panel rounded-2xl border border-slate-800 overflow-hidden shadow-xl">
-                <div class="overflow-x-auto">
-                    <table class="w-full text-xs text-left text-slate-300">
-                        <thead class="uppercase bg-slate-900/90 text-slate-400 font-black border-b border-slate-800">
-                            <tr>
-                                <th class="px-4 py-3">Código</th>
-                                <th class="px-4 py-3">Item / Equipamento</th>
-                                <th class="px-4 py-3">Nº de Série</th>
-                                <th class="px-4 py-3">Localização na Igreja</th>
-                                <th class="px-4 py-3 text-center">Qtd</th>
-                                <th class="px-4 py-3 text-right">Valor Unit.</th>
-                                <th class="px-4 py-3 text-right">Subtotal</th>
-                                <th class="px-4 py-3 text-center">Comprovante NF</th>
-                                <th class="px-4 py-3 text-center">Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody id="patrimonio-tbody" class="divide-y divide-slate-800/80">
-                            <!-- Preenchido via JS -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
+                    <!-- VIRADA DO MÊS -->
+                    <div class="glass-panel p-8 rounded-3xl space-y-5">
+                        <h3 class="text-lg font-black text-white flex items-center gap-2.5">
+                            <i class="fa-solid fa-rotate text-blue-400"></i> Virada de Mês & Fechamento
+                        </h3>
+                        <p class="text-xs text-slate-300 leading-relaxed font-normal">
+                            Esta ação arquiva o balanço atual no <strong>Histórico</strong>, <strong>ZERA</strong> os acumulados de entradas e despesas do ciclo e <strong>PRESERVA O SALDO ATUAL EM CAIXA VITALÍCIO INTACTO</strong>.
+                        </p>
 
-        <!-- ==================== JANELA 5: PRESTAÇÃO DE CONTAS ==================== -->
-        <section id="win-prestacao" class="window-content hidden space-y-6">
-            
-            <div class="flex items-center justify-between glass-panel p-5 rounded-2xl border border-slate-800 no-print">
-                <div>
-                    <h2 class="text-xl font-black text-white flex items-center gap-2">
-                        <i class="fa-solid fa-file-invoice-dollar text-blue-400"></i> Prestação de Contas & Projeção
-                    </h2>
-                    <p class="text-xs text-slate-400">Layout formatado para retroprojetor e exportação oficial.</p>
-                </div>
-                <button onclick="window.print()" class="btn-royal-3d font-black px-5 py-2.5 rounded-xl text-xs flex items-center gap-2">
-                    <i class="fa-solid fa-print"></i> Gerar PDF / Imprimir
-                </button>
-            </div>
-
-            <div class="glass-panel border border-slate-800 rounded-3xl p-8 space-y-8 print:bg-white print:text-black print:border-none shadow-2xl">
-                <div class="text-center border-b border-slate-800 print:border-gray-300 pb-6">
-                    <h1 class="text-3xl font-black text-white print:text-black tracking-wider">IGREJA GETSÊMANI</h1>
-                    <p class="text-xs text-blue-400 print:text-gray-600 font-black uppercase tracking-widest mt-1">RELATÓRIO OFICIAL DE PRESTAÇÃO DE CONTAS</p>
-                    <p class="text-xs text-slate-500 print:text-gray-500 mt-1">Gerado via sistema brayan.sistemy</p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-                    <div class="bg-slate-900/90 print:bg-gray-100 p-5 rounded-2xl border border-emerald-500/30">
-                        <p class="text-xs uppercase font-black text-emerald-400 print:text-gray-600">Arrecadamos no Mês (X)</p>
-                        <h2 id="report-arrecadado" class="text-3xl font-black text-white print:text-black mt-2">R$ 0,00</h2>
-                    </div>
-                    <div class="bg-slate-900/90 print:bg-gray-100 p-5 rounded-2xl border border-rose-500/30">
-                        <p class="text-xs uppercase font-black text-rose-400 print:text-gray-600">Gastamos no Mês (Y)</p>
-                        <h2 id="report-gastos" class="text-3xl font-black text-slate-200 print:text-black mt-2">R$ 0,00</h2>
-                    </div>
-                    <div class="bg-slate-900/90 print:bg-gray-100 p-5 rounded-2xl border border-blue-500/30">
-                        <p class="text-xs uppercase font-black text-blue-400 print:text-gray-600">Superávit / Sobra (W)</p>
-                        <h2 id="report-sobra" class="text-3xl font-black text-white print:text-black mt-2">R$ 0,00</h2>
-                    </div>
-                </div>
-
-                <div class="pt-8 border-t border-slate-800 print:border-gray-300 grid grid-cols-3 text-center text-xs text-slate-400 print:text-gray-600">
-                    <div>
-                        <div class="border-b border-slate-700 print:border-gray-400 w-3/4 mx-auto mb-1"></div>
-                        <p class="font-bold">Pastor Presidente</p>
-                    </div>
-                    <div>
-                        <div class="border-b border-slate-700 print:border-gray-400 w-3/4 mx-auto mb-1"></div>
-                        <p class="font-bold">Brayan - ADM Geral</p>
-                        <p class="text-[9px] text-amber-400 font-bold">brayan.sistemy</p>
-                    </div>
-                    <div>
-                        <div class="border-b border-slate-700 print:border-gray-400 w-3/4 mx-auto mb-1"></div>
-                        <p class="font-bold">Tesouraria Geral</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ==================== JANELA 6: CONFIGURAÇÕES & USUÁRIOS (RESTRIÇÃO BRAYAN + GERENCIAMENTO DE SENHAS) ==================== -->
-        <section id="win-config" class="window-content hidden space-y-6">
-            
-            <div class="glass-gold p-6 rounded-2xl border border-amber-500/40 flex flex-col md:flex-row items-center justify-between gap-4 shadow-2xl">
-                <div>
-                    <div class="flex items-center gap-2">
-                        <h3 class="text-lg font-black text-white">Virada do Mês & Fechamento de Competência</h3>
-                        <span class="bg-amber-400 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded">Ação Contábil</span>
-                    </div>
-                    <p class="text-xs text-slate-300 mt-1">
-                        Zera Entradas e Saídas do fluxo do mês, salva o fechamento no <strong>Histórico</strong> e <strong>MANTÉM O SALDO ATUAL ACUMULADO INTACTO</strong>.
-                    </p>
-                </div>
-                <button onclick="executarViradaDoMes()" class="btn-gold-3d font-black px-5 py-3 rounded-xl text-xs flex items-center gap-2 whitespace-nowrap">
-                    <i class="fa-solid fa-rotate text-sm"></i> Executar Virada do Mês
-                </button>
-            </div>
-
-            <!-- ALTERAR MINHA PRÓPRIA SENHA -->
-            <div class="glass-panel rounded-2xl p-5 border border-slate-800 shadow-xl space-y-4">
-                <h3 class="font-black text-white text-sm flex items-center gap-2">
-                    <i class="fa-solid fa-key text-amber-400"></i> Minha Segurança & Alterar Senha
-                </h3>
-                <form onsubmit="alterarMinhaSenha(event)" class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
-                    <div>
-                        <label class="block text-slate-400 mb-1 font-semibold">Senha Atual</label>
-                        <input type="password" id="self-pass-curr" required placeholder="Sua senha atual" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white">
-                    </div>
-                    <div>
-                        <label class="block text-slate-400 mb-1 font-semibold">Nova Senha Segura</label>
-                        <input type="password" id="self-pass-new" required placeholder="Nova senha" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white">
-                    </div>
-                    <div class="flex items-end">
-                        <button type="submit" class="w-full btn-gold-3d py-2.5 rounded-xl font-bold flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-lock"></i> Atualizar Minha Senha
+                        <button type="button" onclick="executarViradaDoMes()" class="w-full py-4 bg-amber-600 hover:bg-amber-500 text-slate-950 font-black rounded-2xl text-xs uppercase tracking-wider shadow-xl transition">
+                            <i class="fa-solid fa-bolt mr-2"></i> Executar Virada do Mês Agora
                         </button>
                     </div>
-                </form>
-            </div>
 
-            <!-- GESTÃO DE USUÁRIOS (CONTROLADA POR BRAYAN) -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                
-                <div class="glass-panel rounded-2xl p-5 border border-slate-800 shadow-xl space-y-4">
-                    <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-                        <div>
-                            <h3 class="font-black text-white text-sm flex items-center gap-2">
-                                <i class="fa-solid fa-users-gear text-blue-400"></i> Usuários do Sistema
+                    <!-- GESTÃO DE USUÁRIOS (RESTRITA AO ADM BRAYAN) -->
+                    <div class="glass-panel p-8 rounded-3xl space-y-5">
+                        <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+                            <h3 class="text-lg font-black text-white flex items-center gap-2.5">
+                                <i class="fa-solid fa-users-gear text-amber-400"></i> Usuários do Sistema
                             </h3>
-                            <p class="text-[10px] text-slate-400">Apenas Brayan ADM tem autorização de cadastro e exclusão.</p>
+                            <div id="new-user-btn-container">
+                                <!-- Botão renderizado via JS -->
+                            </div>
                         </div>
 
-                        <!-- Botão Cadastrar Usuário: Habilitado apenas para Brayan -->
-                        <div id="new-user-btn-container">
-                            <!-- Injetado por JS baseado no login -->
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs">
+                                <thead class="bg-slate-900/80 text-slate-400 uppercase font-bold border-b border-slate-800">
+                                    <tr>
+                                        <th class="px-3 py-3">Nome</th>
+                                        <th class="px-3 py-3">Cargo</th>
+                                        <th class="px-3 py-3">Dízimos</th>
+                                        <th class="px-3 py-3 text-center">Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="users-tbody" class="divide-y divide-slate-800/60">
+                                    <!-- Renderizado via JS -->
+                                </tbody>
+                            </table>
                         </div>
                     </div>
 
-                    <div class="overflow-y-auto max-h-64">
-                        <table class="w-full text-xs text-left text-slate-300">
-                            <thead class="bg-slate-900/90 text-slate-400 uppercase font-black">
-                                <tr>
-                                    <th class="px-3 py-2">Nome</th>
-                                    <th class="px-3 py-2">Cargo</th>
-                                    <th class="px-3 py-2">Acesso Dízimos</th>
-                                    <th class="px-3 py-2 text-center">Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody id="users-tbody" class="divide-y divide-slate-800/80">
-                                <!-- Injetado por JS -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Histórico de Fechamentos -->
-                <div class="glass-panel rounded-2xl p-5 border border-slate-800 shadow-xl space-y-4">
-                    <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-                        <h3 class="font-black text-white text-sm flex items-center gap-2">
-                            <i class="fa-solid fa-box-archive text-amber-400"></i> Histórico de Meses Encerrados
+                    <!-- MINHA SEGURANÇA & ALTERAR SENHA -->
+                    <div class="glass-panel p-8 rounded-3xl space-y-5">
+                        <h3 class="text-lg font-black text-white flex items-center gap-2.5">
+                            <i class="fa-solid fa-shield-halved text-emerald-400"></i> Segurança & Alterar Senha
                         </h3>
-                        <span class="text-xs text-slate-400 font-bold">Arquivos</span>
+                        <form onsubmit="alterarMinhaSenha(event)" class="space-y-4">
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Senha Atual</label>
+                                <input type="password" id="self-pass-curr" required placeholder="Digite sua senha atual" class="w-full bg-slate-900 border border-slate-700 rounded-xl py-2.5 px-3.5 text-xs text-white focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Nova Senha</label>
+                                <input type="password" id="self-pass-new" required placeholder="Digite a nova senha" class="w-full bg-slate-900 border border-slate-700 rounded-xl py-2.5 px-3.5 text-xs text-white focus:outline-none">
+                            </div>
+                            <button type="submit" class="btn-royal-3d w-full py-3 rounded-xl font-bold text-xs text-white">
+                                Atualizar Minha Senha
+                            </button>
+                        </form>
                     </div>
 
-                    <div class="overflow-y-auto max-h-64">
-                        <table class="w-full text-xs text-left text-slate-300">
-                            <thead class="bg-slate-900/90 text-slate-400 uppercase font-black">
-                                <tr>
-                                    <th class="px-3 py-2">Mês / Ano</th>
-                                    <th class="px-3 py-2">Entradas</th>
-                                    <th class="px-3 py-2">Saídas</th>
-                                    <th class="px-3 py-2 text-right">Saldo do Mês</th>
-                                </tr>
-                            </thead>
-                            <tbody id="history-tbody" class="divide-y divide-slate-800/80">
-                                <!-- Injetado por JS -->
-                            </tbody>
-                        </table>
+                    <!-- HISTÓRICO DE MESES ENCERRADOS -->
+                    <div class="glass-panel p-8 rounded-3xl space-y-5">
+                        <h3 class="text-lg font-black text-white flex items-center gap-2.5">
+                            <i class="fa-solid fa-box-archive text-slate-400"></i> Histórico de Fechamentos
+                        </h3>
+                        <div class="overflow-x-auto max-h-52">
+                            <table class="w-full text-left text-xs">
+                                <thead class="bg-slate-900/80 text-slate-400 uppercase font-bold border-b border-slate-800">
+                                    <tr>
+                                        <th class="px-3 py-3">Mês / Ano</th>
+                                        <th class="px-3 py-3">Entradas</th>
+                                        <th class="px-3 py-3">Saídas</th>
+                                        <th class="px-3 py-3 text-right">Saldo Período</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="history-tbody" class="divide-y divide-slate-800/60">
+                                    <tr><td colspan="4" class="px-3 py-6 text-center text-slate-500 italic">Nenhum histórico arquivado.</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
+
                 </div>
             </div>
-        </section>
 
-    </main>
-
-    <!-- Rodapé -->
-    <footer class="bg-slate-950 border-t border-slate-900 py-4 text-center text-xs text-slate-500 no-print">
-        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-2">
-            <div>
-                © Igreja Getsêmani - Todos os direitos reservados.
-            </div>
-            <div class="flex items-center gap-2 font-black text-slate-300">
-                <i class="fa-solid fa-shield-halved text-amber-400"></i> Desenvolvido por <span class="text-blue-400 underline">brayan.sistemy</span>
-            </div>
-        </div>
-    </footer>
-
-    <!-- ==================== MODAIS ==================== -->
-
-    <!-- MODAL: Recuperar / Redefinir Senha -->
-    <div id="modal-recuperar-senha" class="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden">
-        <div class="glass-panel border border-slate-700 rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4">
-            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                <h3 class="font-extrabold text-lg text-white flex items-center gap-2">
-                    <i class="fa-solid fa-key text-blue-400"></i> Definir Nova Senha
-                </h3>
-                <button onclick="closeModal('modal-recuperar-senha')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
-            </div>
-
-            <form onsubmit="redefinirSenhaExt(event)" class="space-y-4 text-xs">
-                <div>
-                    <label class="block text-slate-400 mb-1 font-semibold">Seu Usuário de Acesso</label>
-                    <input type="text" id="reset-user" required placeholder="Ex: brayan, pastor..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white">
-                </div>
-
-                <div>
-                    <label class="block text-slate-400 mb-1 font-semibold">Nova Senha Segura</label>
-                    <input type="password" id="reset-new-pass" required placeholder="Digite a nova senha desejada" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white">
-                </div>
-
-                <div class="flex justify-end gap-3 pt-2">
-                    <button type="button" onclick="closeModal('modal-recuperar-senha')" class="bg-slate-800 text-slate-300 px-4 py-2 rounded-xl font-bold">Cancelar</button>
-                    <button type="submit" class="btn-royal-3d px-5 py-2 rounded-xl font-black">Salvar Nova Senha</button>
-                </div>
-            </form>
-        </div>
+        </main>
     </div>
 
-    <!-- MODAL 1: Nova Entrada -->
-    <div id="modal-entrada" class="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden">
-        <div class="glass-panel border border-slate-700 rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4">
-            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                <h3 class="font-extrabold text-lg text-white flex items-center gap-2">
-                    <i class="fa-solid fa-circle-plus text-emerald-400"></i> Registrar Nova Entrada
-                </h3>
-                <button onclick="closeModal('modal-entrada')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
-            </div>
+    <!-- MODAIS E JANELAS POPUP -->
 
-            <form id="form-entrada" onsubmit="salvarEntrada(event)" class="space-y-4 text-xs">
+    <!-- MODAL NOVA ENTRADA -->
+    <div id="modal-entrada" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+        <div class="glass-panel w-full max-w-lg p-7 rounded-3xl border border-slate-700 space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                <h3 class="font-black text-white text-base">Nova Entrada Financeira</h3>
+                <button type="button" onclick="closeModal('modal-entrada')" class="text-slate-500 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <form id="form-entrada" onsubmit="salvarEntrada(event)" class="space-y-4">
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-slate-400 mb-1 font-semibold">Tipo de Entrada</label>
-                        <select id="in-tipo" onchange="toggleDizimistaField()" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white">
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Tipo</label>
+                        <select id="in-tipo" onchange="toggleDizimistaField()" class="w-full bg-slate-900 border border-slate-700 rounded-xl py-2.5 px-3 text-xs text-white">
+                            <option value="Dízimo">Dízimo (Identificado)</option>
                             <option value="Oferta">Oferta (Anônimo)</option>
-                            <option value="Dízimo">Dízimo (Identificado com Sigilo)</option>
-                            <option value="Doação Especial">Doação Especial</option>
-                            <option value="Evento / Cantina">Evento / Cantina</option>
+                            <option value="Evento">Arrecadação de Eventos</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-slate-400 mb-1 font-semibold">Área Ministerial</label>
-                        <select id="in-area" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white">
-                            <option value="Geral">Culto Geral</option>
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Área Ministerial</label>
+                        <select id="in-area" class="w-full bg-slate-900 border border-slate-700 rounded-xl py-2.5 px-3 text-xs text-white">
+                            <option value="Geral">Geral / Cultos</option>
                             <option value="Jovens">Jovens</option>
-                            <option value="Kids">Kids</option>
-                            <option value="Missões">Missões</option>
+                            <option value="Kids">Infantil (Kids)</option>
                             <option value="Louvor">Louvor</option>
+                            <option value="Missões">Missões</option>
                             <option value="Eventos">Eventos</option>
                         </select>
                     </div>
                 </div>
 
-                <div id="field-dizimista" class="hidden">
-                    <label class="block text-amber-400 mb-1 font-bold">Nome do Dizimista (Sigilo Ativo)</label>
-                    <input type="text" id="in-dizimista-nome" placeholder="Ex: Irmão João Silva" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white">
+                <div id="field-dizimista">
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Nome do Dizimista</label>
+                    <input type="text" id="in-dizimista-nome" placeholder="Digite o nome da pessoa" class="w-full bg-slate-900 border border-slate-700 rounded-xl py-2.5 px-3 text-xs text-white">
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-slate-400 mb-1 font-semibold">Valor (R$)</label>
-                        <input type="number" step="0.01" id="in-valor" required placeholder="0.00" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white">
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Valor (R$)</label>
+                        <input type="number" step="0.01" id="in-valor" required placeholder="0.00" class="w-full bg-slate-900 border border-slate-700 rounded-xl py-2.5 px-3 text-xs text-white font-bold">
                     </div>
                     <div>
-                        <label class="block text-slate-400 mb-1 font-semibold">Data</label>
-                        <input type="date" id="in-data" required class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white">
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Data</label>
+                        <input type="date" id="in-data" required class="w-full bg-slate-900 border border-slate-700 rounded-xl py-2.5 px-3 text-xs text-white">
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-slate-400 mb-1 font-semibold">Observação</label>
-                    <input type="text" id="in-obs" placeholder="Ex: Culto de Domingo Noite" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white">
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Observação</label>
+                    <input type="text" id="in-obs" placeholder="Detalhes (opcional)" class="w-full bg-slate-900 border border-slate-700 rounded-xl py-2.5 px-3 text-xs text-white">
                 </div>
 
-                <div class="flex justify-end gap-3 pt-2">
-                    <button type="button" onclick="closeModal('modal-entrada')" class="bg-slate-800 text-slate-300 px-4 py-2 rounded-xl font-bold">Cancelar</button>
-                    <button type="submit" class="btn-royal-3d px-5 py-2 rounded-xl font-black">Salvar Entrada</button>
-                </div>
+                <button type="submit" class="btn-royal-3d w-full py-3.5 rounded-xl font-bold text-xs text-white uppercase tracking-wider mt-2">
+                    Salvar Registro de Entrada
+                </button>
             </form>
         </div>
     </div>
 
-    <!-- MODAL 2: Nova Saída -->
-    <div id="modal-saida" class="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden">
-        <div class="glass-panel border border-slate-700 rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4">
+    <!-- MODAL NOVA SAÍDA -->
+    <div id="modal-saida" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+        <div class="glass-panel w-full max-w-lg p-7 rounded-3xl border border-slate-700 space-y-4">
             <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                <h3 class="font-extrabold text-lg text-white flex items-center gap-2">
-                    <i class="fa-solid fa-circle-minus text-rose-400"></i> Registrar Nova Saída
-                </h3>
-                <button onclick="closeModal('modal-saida')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+                <h3 class="font-black text-white text-base">Nova Saída / Despesa</h3>
+                <button type="button" onclick="closeModal('modal-saida')" class="text-slate-500 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
-
-            <form id="form-saida" onsubmit="salvarSaida(event)" class="space-y-4 text-xs">
+            <form id="form-saida" onsubmit="salvarSaida(event)" class="space-y-4">
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-slate-400 mb-1 font-semibold">Plano de Contas</label>
-                        <select id="out-cat" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white">
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Categoria</label>
+                        <select id="out-cat" class="w-full bg-slate-900 border border-slate-700 rounded-xl py-2.5 px-3 text-xs text-white">
                             <option value="Conta de Luz">Conta de Luz</option>
                             <option value="Conta de Água">Conta de Água</option>
                             <option value="Internet / Telefone">Internet / Telefone</option>
-                            <option value="Aluguel / Imóvel">Aluguel / Imóvel</option>
-                            <option value="Equipamentos & Materiais">Equipamentos & Materiais</option>
+                            <option value="Aluguel do Templo">Aluguel do Templo</option>
                             <option value="Manutenção & Reformas">Manutenção & Reformas</option>
+                            <option value="Compra de Equipamentos">Compra de Equipamentos</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-slate-400 mb-1 font-semibold">Área Ministerial</label>
-                        <select id="out-area" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white">
-                            <option value="Geral">Geral / ADM</option>
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Área Ministerial</label>
+                        <select id="out-area" class="w-full bg-slate-900 border border-slate-700 rounded-xl py-2.5 px-3 text-xs text-white">
+                            <option value="Geral">Geral / Templo</option>
                             <option value="Jovens">Jovens</option>
                             <option value="Kids">Kids</option>
-                            <option value="Missões">Missões</option>
                             <option value="Louvor">Louvor</option>
                         </select>
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-slate-400 mb-1 font-semibold">Descrição do Gasto</label>
-                    <input type="text" id="out-desc" required placeholder="Ex: Pagamento Enel Conta de Luz" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white">
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Descrição</label>
+                    <input type="text" id="out-desc" required placeholder="Ex: Conta de Luz referente ao mês" class="w-full bg-slate-900 border border-slate-700 rounded-xl py-2.5 px-3 text-xs text-white">
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-slate-400 mb-1 font-semibold">Valor (R$)</label>
-                        <input type="number" step="0.01" id="out-valor" required placeholder="0.00" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white">
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Valor (R$)</label>
+                        <input type="number" step="0.01" id="out-valor" required placeholder="0.00" class="w-full bg-slate-900 border border-slate-700 rounded-xl py-2.5 px-3 text-xs text-white font-bold">
                     </div>
                     <div>
-                        <label class="block text-slate-400 mb-1 font-semibold">Data</label>
-                        <input type="date" id="out-data" required class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white">
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Data</label>
+                        <input type="date" id="out-data" required class="w-full bg-slate-900 border border-slate-700 rounded-xl py-2.5 px-3 text-xs text-white">
                     </div>
                 </div>
 
-                <div class="bg-slate-900 border border-slate-700 p-3 rounded-xl flex items-center justify-between">
-                    <span class="text-xs text-amber-300 font-bold">Deseja cadastrar no Patrimônio da Igreja?</span>
-                    <input type="checkbox" id="out-is-patrimonio" class="w-5 h-5 accent-amber-400 rounded cursor-pointer">
+                <div class="p-3.5 bg-amber-500/10 border border-amber-500/30 rounded-xl flex items-center gap-3">
+                    <input type="checkbox" id="out-is-patrimonio" class="w-4 h-4 rounded text-blue-600 focus:ring-0">
+                    <label for="out-is-patrimonio" class="text-xs text-amber-300 font-bold cursor-pointer">
+                        Deseja cadastrar este item no Patrimônio da Igreja?
+                    </label>
                 </div>
 
-                <div class="flex justify-end gap-3 pt-2">
-                    <button type="button" onclick="closeModal('modal-saida')" class="bg-slate-800 text-slate-300 px-4 py-2 rounded-xl font-bold">Cancelar</button>
-                    <button type="submit" class="bg-rose-600 hover:bg-rose-500 text-white px-5 py-2 rounded-xl font-bold">Salvar Saída</button>
-                </div>
+                <button type="submit" class="w-full py-3.5 bg-rose-600 hover:bg-rose-500 font-bold text-xs text-white rounded-xl uppercase tracking-wider mt-2">
+                    Salvar Registro de Saída
+                </button>
             </form>
         </div>
     </div>
 
-    <!-- MODAL 3: Novo Patrimônio -->
-    <div id="modal-patrimonio" class="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden">
-        <div class="glass-panel border border-slate-700 rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4">
+    <!-- MODAL NOVO PATRIMÔNIO -->
+    <div id="modal-patrimonio" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+        <div class="glass-panel w-full max-w-lg p-7 rounded-3xl border border-slate-700 space-y-4">
             <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                <h3 class="font-extrabold text-lg text-white flex items-center gap-2">
-                    <i class="fa-solid fa-boxes-packing text-amber-400"></i> Ficha de Patrimônio
-                </h3>
-                <button onclick="closeModal('modal-patrimonio')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+                <h3 class="font-black text-white text-base">Tombar Equipamento no Patrimônio</h3>
+                <button type="button" onclick="closeModal('modal-patrimonio')" class="text-slate-500 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
-
-            <form id="form-patrimonio" onsubmit="salvarPatrimonio(event)" class="space-y-4 text-xs">
+            <form id="form-patrimonio" onsubmit="salvarPatrimonio(event)" class="space-y-4">
                 <div>
-                    <label class="block text-slate-400 mb-1 font-semibold">Nome do Item</label>
-                    <input type="text" id="pat-nome" required placeholder="Ex: Caixa de Som Ativa JBL 500W" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white">
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Nome do Equipamento</label>
+                    <input type="text" id="pat-nome" required placeholder="Ex: Caixa de Som JBL EON 715" class="w-full bg-slate-900 border border-slate-700 rounded-xl py-2.5 px-3 text-xs text-white">
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-slate-400 mb-1 font-semibold">Nº de Série (SN)</label>
-                        <input type="text" id="pat-serie" required placeholder="SN-882019" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white">
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Nº de Série</label>
+                        <input type="text" id="pat-serie" required placeholder="SN-88776655" class="w-full bg-slate-900 border border-slate-700 rounded-xl py-2.5 px-3 text-xs text-white font-mono">
                     </div>
                     <div>
-                        <label class="block text-slate-400 mb-1 font-semibold">Localização</label>
-                        <input type="text" id="pat-local" required placeholder="Púlpito / Som" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white">
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Localização</label>
+                        <input type="text" id="pat-local" required placeholder="Púlpito / Cabine Som" class="w-full bg-slate-900 border border-slate-700 rounded-xl py-2.5 px-3 text-xs text-white">
                     </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-slate-400 mb-1 font-semibold">Quantidade</label>
-                        <input type="number" id="pat-qtd" value="1" min="1" required class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white">
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Quantidade</label>
+                        <input type="number" id="pat-qtd" value="1" min="1" required class="w-full bg-slate-900 border border-slate-700 rounded-xl py-2.5 px-3 text-xs text-white font-bold">
                     </div>
                     <div>
-                        <label class="block text-slate-400 mb-1 font-semibold">Valor Unitário (R$)</label>
-                        <input type="number" step="0.01" id="pat-valor" required placeholder="500.00" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white">
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Valor Unit. (R$)</label>
+                        <input type="number" step="0.01" id="pat-valor" required placeholder="0.00" class="w-full bg-slate-900 border border-slate-700 rounded-xl py-2.5 px-3 text-xs text-white font-bold">
                     </div>
                 </div>
 
-                <div class="flex justify-end gap-3 pt-2">
-                    <button type="button" onclick="closeModal('modal-patrimonio')" class="bg-slate-800 text-slate-300 px-4 py-2 rounded-xl font-bold">Cancelar</button>
-                    <button type="submit" class="btn-gold-3d px-5 py-2 rounded-xl font-black">Salvar no Patrimônio</button>
-                </div>
+                <button type="submit" class="btn-royal-3d w-full py-3.5 rounded-xl font-bold text-xs text-white uppercase tracking-wider mt-2">
+                    Tombar & Cadastrar Equipamento
+                </button>
             </form>
         </div>
     </div>
 
-    <!-- MODAL 4: Novo Usuário com Definicao de Senha Segura (Apenas Brayan) -->
-    <div id="modal-usuario" class="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden">
-        <div class="glass-panel border border-slate-700 rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4">
+    <!-- MODAL NOVO USUÁRIO -->
+    <div id="modal-usuario" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+        <div class="glass-panel w-full max-w-md p-7 rounded-3xl border border-slate-700 space-y-4">
             <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                <h3 class="font-extrabold text-lg text-white flex items-center gap-2">
-                    <i class="fa-solid fa-user-plus text-blue-400"></i> Cadastrar Novo Usuário
-                </h3>
-                <button onclick="closeModal('modal-usuario')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+                <h3 class="font-black text-white text-base">Criar Novo Usuário</h3>
+                <button type="button" onclick="closeModal('modal-usuario')" class="text-slate-500 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
-
-            <form id="form-usuario" onsubmit="salvarUsuario(event)" class="space-y-4 text-xs">
+            <form id="form-usuario" onsubmit="salvarUsuario(event)" class="space-y-4">
                 <div>
-                    <label class="block text-slate-400 mb-1 font-semibold">Nome Completo</label>
-                    <input type="text" id="usr-nome" required placeholder="Ex: Pr. Carlos Roberto" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white">
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Nome Completo</label>
+                    <input type="text" id="usr-nome" required placeholder="Nome do usuário" class="w-full bg-slate-900 border border-slate-700 rounded-xl py-2.5 px-3 text-xs text-white">
                 </div>
-
                 <div>
-                    <label class="block text-slate-400 mb-1 font-semibold">Usuário de Login</label>
-                    <input type="text" id="usr-user" required placeholder="ex: carlos" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white">
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Usuário para Login</label>
+                    <input type="text" id="usr-user" required placeholder="ex: usuario" class="w-full bg-slate-900 border border-slate-700 rounded-xl py-2.5 px-3 text-xs text-white">
                 </div>
-
                 <div>
-                    <label class="block text-slate-400 mb-1 font-semibold">Senha Personalizada Segura</label>
-                    <input type="password" id="usr-pass" required placeholder="Defina a senha para este usuário" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white">
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Senha Segura</label>
+                    <input type="password" id="usr-pass" required placeholder="Digite a senha" class="w-full bg-slate-900 border border-slate-700 rounded-xl py-2.5 px-3 text-xs text-white">
                 </div>
-
                 <div>
-                    <label class="block text-slate-400 mb-1 font-semibold">Função / Cargo</label>
-                    <select id="usr-cargo" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white">
-                        <option value="Pastor">Pastor (Acesso Total + Dizimistas)</option>
-                        <option value="Tesoureira">Tesoureira (Acesso Total + Dizimistas)</option>
-                        <option value="Líder de Ministério">Líder de Ministério (Restrito)</option>
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Cargo / Função</label>
+                    <select id="usr-cargo" class="w-full bg-slate-900 border border-slate-700 rounded-xl py-2.5 px-3 text-xs text-white">
+                        <option value="Tesoureira">Tesoureira</option>
+                        <option value="Pastor Auxiliar">Pastor Auxiliar</option>
+                        <option value="Líder de Ministério">Líder de Ministério</option>
                     </select>
                 </div>
-
-                <div class="flex justify-end gap-3 pt-2">
-                    <button type="button" onclick="closeModal('modal-usuario')" class="bg-slate-800 text-slate-300 px-4 py-2 rounded-xl font-bold">Cancelar</button>
-                    <button type="submit" class="btn-royal-3d px-5 py-2 rounded-xl font-black">Criar Conta</button>
-                </div>
+                <button type="submit" class="btn-royal-3d w-full py-3.5 rounded-xl font-bold text-xs text-white uppercase tracking-wider mt-2">
+                    Criar Usuário no Banco
+                </button>
             </form>
         </div>
     </div>
 
-    <!-- MODAL 5: Notificação -->
-    <div id="modal-msg" class="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden">
-        <div class="glass-panel border border-slate-700 rounded-3xl max-w-sm w-full p-6 text-center shadow-2xl space-y-4">
-            <div id="msg-icon" class="text-4xl text-blue-400"><i class="fa-solid fa-circle-check"></i></div>
-            <h3 id="msg-title" class="font-black text-lg text-white">Notificação</h3>
-            <p id="msg-body" class="text-xs text-slate-300 font-medium">Operação efetuada com sucesso.</p>
-            <button onclick="closeModal('modal-msg')" class="w-full btn-royal-3d font-bold py-2 rounded-xl text-xs">Entendido</button>
+    <!-- MODAL REDEFINIR SENHA -->
+    <div id="modal-recuperar-senha" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+        <div class="glass-panel w-full max-w-md p-7 rounded-3xl border border-slate-700 space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                <h3 class="font-black text-white text-base">Redefinir Senha</h3>
+                <button type="button" onclick="closeModal('modal-recuperar-senha')" class="text-slate-500 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <form onsubmit="redefinirSenhaExt(event)" class="space-y-4">
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Seu Usuário</label>
+                    <input type="text" id="reset-user" required placeholder="Informe seu usuário" class="w-full bg-slate-900 border border-slate-700 rounded-xl py-2.5 px-3 text-xs text-white">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Nova Senha</label>
+                    <input type="password" id="reset-new-pass" required placeholder="Digite a nova senha" class="w-full bg-slate-900 border border-slate-700 rounded-xl py-2.5 px-3 text-xs text-white">
+                </div>
+                <button type="submit" class="btn-royal-3d w-full py-3.5 rounded-xl font-bold text-xs text-white uppercase tracking-wider">
+                    Atualizar Senha
+                </button>
+            </form>
         </div>
     </div>
 
-    <!-- ==================== LOGICA EM JAVASCRIPT ==================== -->
+    <!-- MODAL MENSAGEM NOTIFICAÇÃO -->
+    <div id="modal-msg" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+        <div class="glass-panel w-full max-w-sm p-7 rounded-3xl border border-slate-700 space-y-4 text-center">
+            <div class="w-12 h-12 mx-auto rounded-2xl bg-blue-600/20 text-blue-400 flex items-center justify-center text-xl border border-blue-500/30">
+                <i class="fa-solid fa-info-circle"></i>
+            </div>
+            <h4 id="msg-title" class="font-black text-white text-base">Notificação</h4>
+            <p id="msg-body" class="text-xs text-slate-300">Mensagem</p>
+            <button type="button" onclick="closeModal('modal-msg')" class="w-full btn-royal-3d py-3 rounded-xl font-bold text-xs text-white uppercase">
+                OK, Entendi
+            </button>
+        </div>
+    </div>
+
+    <!-- SCRIPTS JS GLOBAIS COM PERSISTÊNCIA -->
     <script>
-        /* ESTADO GLOBAL */
-        let activeUser = null; // Guardará o objeto do usuário logado
+        window.STORAGE_KEY_USERS = 'brayan_sistemy_users_v6';
+        window.STORAGE_KEY_ENTRADAS = 'brayan_sistemy_entradas_v6';
+        window.STORAGE_KEY_SAIDAS = 'brayan_sistemy_saidas_v6';
+        window.STORAGE_KEY_PATRIMONIO = 'brayan_sistemy_patrimonio_v6';
+        window.STORAGE_KEY_HISTORICO = 'brayan_sistemy_historico_v6';
+        window.STORAGE_KEY_SALDO = 'brayan_sistemy_saldo_v6';
 
-        let saldoAtualAcumulado = 0.00;
-        let entradasList = [];
-        let saidasList = [];
-        let patrimonioList = [];
-        let historicoMeses = [];
+        window.activeUser = null;
+        window.saldoAtualAcumulado = 0.00;
+        window.entradasList = [];
+        window.saidasList = [];
+        window.patrimonioList = [];
+        window.historicoMeses = [];
 
-        // Banco de Usuários com Senhas
-        let usuariosList = [
-            { id: 1, user: "brayan", pass: "123456", nome: "Brayan", cargo: "Dono & ADM Geral", isOwner: true, dizimosAccess: true },
+        window.defaultUsuarios = [
+            { id: 1, user: "brayan", pass: "Bc2010.com", nome: "Brayan", cargo: "Dono & ADM Geral", isOwner: true, dizimosAccess: true },
             { id: 2, user: "pastor", pass: "pastor123", nome: "Pr. Marcos Silva", cargo: "Pastor Presidente", isOwner: false, dizimosAccess: true },
             { id: 3, user: "ana", pass: "ana123", nome: "Ana Maria", cargo: "Tesoureira 1", isOwner: false, dizimosAccess: true },
             { id: 4, user: "carla", pass: "carla123", nome: "Carla Santos", cargo: "Tesoureira 2", isOwner: false, dizimosAccess: true }
         ];
 
-        let chartFluxoObj = null;
-        let chartDespesasObj = null;
+        window.usuariosList = [];
+        window.chartFluxoObj = null;
+        window.chartDespesasObj = null;
 
-        window.onload = function() {
-            startLiveClock();
-            initCharts();
-            // Inicia na tela de Login Bloqueante
-        };
-
-        function startLiveClock() {
-            function update() {
-                const now = new Date();
-                const clockEl = document.getElementById('live-clock');
-                const dateEl = document.getElementById('live-date');
-                if (clockEl) clockEl.innerText = now.toLocaleTimeString('pt-BR');
-                if (dateEl) {
-                    const options = { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' };
-                    dateEl.innerText = now.toLocaleDateString('pt-BR', options).toUpperCase();
+        window.loginQuick = function(roleKey) {
+            if (roleKey === 'brayan') {
+                const uInput = document.getElementById('login-user');
+                const pInput = document.getElementById('login-pass');
+                if (uInput) uInput.value = 'brayan';
+                if (pInput) {
+                    pInput.value = '';
+                    pInput.focus();
                 }
             }
-            update();
-            setInterval(update, 1000);
-        }
+        };
 
-        /* LOGIN E AUTENTICAÇÃO */
-        function realizarLogin(event) {
+        window.realizarLogin = function(event) {
             if (event) event.preventDefault();
             const uInput = document.getElementById('login-user').value.trim().toLowerCase();
             const pInput = document.getElementById('login-pass').value.trim();
 
-            const found = usuariosList.find(u => u.user.toLowerCase() === uInput && u.pass === pInput);
+            const found = window.usuariosList.find(u => u.user.toLowerCase() === uInput && u.pass === pInput);
 
             if (found) {
-                activeUser = found;
+                window.activeUser = found;
                 document.getElementById('login-overlay').classList.add('hidden');
                 document.getElementById('login-error').classList.add('hidden');
-                renderAll();
-                showNotice("Acesso Concedido", `Bem-vindo ao sistema, ${activeUser.nome}!`);
+                window.renderAll();
+                window.initCharts();
             } else {
                 document.getElementById('login-error').classList.remove('hidden');
             }
-        }
+        };
 
-        function loginQuick(roleKey) {
-            if (roleKey === 'brayan') {
-                const uInput = document.getElementById('login-user');
-                const pInput = document.getElementById('login-pass');
-                uInput.value = 'brayan';
-                pInput.value = '';
-                pInput.focus();
-                showNotice("Informe sua Senha", "O usuário Brayan (ADM) foi selecionado. Por favor, digite sua senha segura para acessar.");
-            }
-        }
-
-        function loginQuick(roleKey) {
-            if (roleKey === 'brayan') {
-                document.getElementById('login-user').value = 'brayan';
-                document.getElementById('login-pass').value = 'brayan123';
-            } else {
-                document.getElementById('login-user').value = 'pastor';
-                document.getElementById('login-pass').value = 'pastor123';
-            }
-            realizarLogin(null);
-        }
-
-        function redefinirSenhaExt(e) {
-            e.preventDefault();
-            const userIn = document.getElementById('reset-user').value.trim().toLowerCase();
-            const passIn = document.getElementById('reset-new-pass').value.trim();
-
-            const found = usuariosList.find(u => u.user.toLowerCase() === userIn);
-            if (found) {
-                found.pass = passIn;
-                closeModal('modal-recuperar-senha');
-                showNotice("Senha Atualizada", `A senha para ${found.nome} foi redefinida com sucesso!`);
-            } else {
-                showNotice("Atenção", "Usuário não encontrado.");
-            }
-        }
-
-        function alterarMinhaSenha(e) {
-            e.preventDefault();
-            const currPass = document.getElementById('self-pass-curr').value;
-            const newPass = document.getElementById('self-pass-new').value;
-
-            if (activeUser.pass !== currPass) {
-                showNotice("Erro", "Sua senha atual informada está incorreta.");
-                return;
-            }
-
-            activeUser.pass = newPass;
-            document.getElementById('self-pass-curr').value = '';
-            document.getElementById('self-pass-new').value = '';
-            showNotice("Sucesso", "Sua senha foi alterada com segurança!");
-        }
-
-        function efetuarLogout() {
-            activeUser = null;
+        window.efetuarLogout = function() {
+            window.activeUser = null;
             document.getElementById('login-overlay').classList.remove('hidden');
             document.getElementById('login-user').value = '';
             document.getElementById('login-pass').value = '';
-        }
+        };
 
-        /* MUDANÇA DE ABAS */
-        function switchTab(tabId) {
+        window.switchTab = function(tabId) {
             document.querySelectorAll('.window-content').forEach(w => w.classList.add('hidden'));
             document.querySelectorAll('.nav-btn').forEach(b => {
                 b.classList.remove('bg-blue-600', 'text-white', 'shadow-lg', 'border-blue-400/40');
@@ -1104,83 +918,168 @@
                 targetBtn.classList.remove('text-slate-400', 'border-transparent');
             }
 
-            if (tabId === 'dashboard' && chartFluxoObj) {
-                updateCharts();
+            if (tabId === 'dashboard') {
+                window.updateCharts();
             }
-        }
+        };
 
-        /* RENDERIZAÇÃO GERAL */
-        function renderAll() {
-            if (!activeUser) return;
-            renderHeaderUser();
-            renderKPIs();
-            renderRecentTransactions();
-            renderEntradasTable();
-            renderSaidasTable();
-            renderPatrimonioTable();
-            renderPrestacaoDeContas();
-            renderUsersSection();
-            renderHistoryTable();
-            updateCharts();
-        }
+        window.carregarDadosStorage = function() {
+            try {
+                const savedUsers = localStorage.getItem(window.STORAGE_KEY_USERS);
+                window.usuariosList = savedUsers ? JSON.parse(savedUsers) : [...window.defaultUsuarios];
 
-        function renderHeaderUser() {
-            document.getElementById('logged-user-name').innerText = activeUser.nome;
-            document.getElementById('logged-user-role').innerText = activeUser.cargo;
-            document.getElementById('user-avatar').innerText = activeUser.nome.charAt(0);
+                const savedEntradas = localStorage.getItem(window.STORAGE_KEY_ENTRADAS);
+                window.entradasList = savedEntradas ? JSON.parse(savedEntradas) : [];
+
+                const savedSaidas = localStorage.getItem(window.STORAGE_KEY_SAIDAS);
+                window.saidasList = savedSaidas ? JSON.parse(savedSaidas) : [];
+
+                const savedPatrimonio = localStorage.getItem(window.STORAGE_KEY_PATRIMONIO);
+                window.patrimonioList = savedPatrimonio ? JSON.parse(savedPatrimonio) : [];
+
+                const savedHist = localStorage.getItem(window.STORAGE_KEY_HISTORICO);
+                window.historicoMeses = savedHist ? JSON.parse(savedHist) : [];
+
+                const savedSaldo = localStorage.getItem(window.STORAGE_KEY_SALDO);
+                window.saldoAtualAcumulado = savedSaldo !== null ? parseFloat(savedSaldo) : 0.00;
+
+            } catch (err) {
+                console.error("Erro no localStorage:", err);
+                window.usuariosList = [...window.defaultUsuarios];
+            }
+        };
+
+        window.persistirTudo = function() {
+            try {
+                localStorage.setItem(window.STORAGE_KEY_USERS, JSON.stringify(window.usuariosList));
+                localStorage.setItem(window.STORAGE_KEY_ENTRADAS, JSON.stringify(window.entradasList));
+                localStorage.setItem(window.STORAGE_KEY_SAIDAS, JSON.stringify(window.saidasList));
+                localStorage.setItem(window.STORAGE_KEY_PATRIMONIO, JSON.stringify(window.patrimonioList));
+                localStorage.setItem(window.STORAGE_KEY_HISTORICO, JSON.stringify(window.historicoMeses));
+                localStorage.setItem(window.STORAGE_KEY_SALDO, window.saldoAtualAcumulado.toString());
+            } catch (err) {
+                console.error("Erro ao persistir:", err);
+            }
+        };
+
+        window.startLiveClock = function() {
+            function update() {
+                const now = new Date();
+                const clockEl = document.getElementById('live-clock');
+                const dateEl = document.getElementById('live-date');
+                if (clockEl) clockEl.innerText = now.toLocaleTimeString('pt-BR');
+                if (dateEl) {
+                    const options = { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' };
+                    dateEl.innerText = now.toLocaleDateString('pt-BR', options).toUpperCase();
+                }
+            }
+            update();
+            setInterval(update, 1000);
+        };
+
+        window.redefinirSenhaExt = function(e) {
+            e.preventDefault();
+            const userIn = document.getElementById('reset-user').value.trim().toLowerCase();
+            const passIn = document.getElementById('reset-new-pass').value.trim();
+
+            const found = window.usuariosList.find(u => u.user.toLowerCase() === userIn);
+            if (found) {
+                found.pass = passIn;
+                window.persistirTudo();
+                window.closeModal('modal-recuperar-senha');
+                window.showNotice("Sucesso", `Senha de ${found.nome} redefinida!`);
+            } else {
+                window.showNotice("Erro", "Usuário não encontrado.");
+            }
+        };
+
+        window.alterarMinhaSenha = function(e) {
+            e.preventDefault();
+            const currPass = document.getElementById('self-pass-curr').value;
+            const newPass = document.getElementById('self-pass-new').value;
+
+            if (window.activeUser.pass !== currPass) {
+                window.showNotice("Erro", "Sua senha atual está incorreta.");
+                return;
+            }
+
+            window.activeUser.pass = newPass;
+            window.persistirTudo();
+            document.getElementById('self-pass-curr').value = '';
+            document.getElementById('self-pass-new').value = '';
+            window.showNotice("Sucesso", "Senha alterada com sucesso!");
+        };
+
+        window.renderAll = function() {
+            if (!window.activeUser) return;
+            window.renderHeaderUser();
+            window.renderKPIs();
+            window.renderRecentTransactions();
+            window.renderEntradasTable();
+            window.renderSaidasTable();
+            window.renderPatrimonioTable();
+            window.renderPrestacaoDeContas();
+            window.renderUsersSection();
+            window.renderHistoryTable();
+            window.updateCharts();
+        };
+
+        window.renderHeaderUser = function() {
+            document.getElementById('logged-user-name').innerText = window.activeUser.nome;
+            document.getElementById('logged-user-role').innerText = window.activeUser.cargo;
+            document.getElementById('user-avatar').innerText = window.activeUser.nome.charAt(0);
 
             const crown = document.getElementById('logged-user-crown');
-            if (activeUser.isOwner) crown.classList.remove('hidden');
+            if (window.activeUser.isOwner) crown.classList.remove('hidden');
             else crown.classList.add('hidden');
-        }
+        };
 
-        function getEntradasTotal() { return entradasList.reduce((a, b) => a + b.valor, 0); }
-        function getSaidasTotal() { return saidasList.reduce((a, b) => a + b.valor, 0); }
-        function getPatrimonioTotal() { return patrimonioList.reduce((a, b) => a + b.total, 0); }
+        window.getEntradasTotal = function() { return window.entradasList.reduce((a, b) => a + b.valor, 0); };
+        window.getSaidasTotal = function() { return window.saidasList.reduce((a, b) => a + b.valor, 0); };
+        window.getPatrimonioTotal = function() { return window.patrimonioList.reduce((a, b) => a + b.total, 0); };
 
-        function renderKPIs() {
-            document.getElementById('kpi-entradas').innerText = formatCurrency(getEntradasTotal());
-            document.getElementById('kpi-saidas').innerText = formatCurrency(getSaidasTotal());
-            document.getElementById('kpi-saldo').innerText = formatCurrency(saldoAtualAcumulado);
-            document.getElementById('kpi-patrimonio').innerText = formatCurrency(getPatrimonioTotal());
-            document.getElementById('kpi-patrimonio-qtd').innerText = patrimonioList.length;
-        }
+        window.renderKPIs = function() {
+            document.getElementById('kpi-entradas').innerText = window.formatCurrency(window.getEntradasTotal());
+            document.getElementById('kpi-saidas').innerText = window.formatCurrency(window.getSaidasTotal());
+            document.getElementById('kpi-saldo').innerText = window.formatCurrency(window.saldoAtualAcumulado);
+            document.getElementById('kpi-patrimonio').innerText = window.formatCurrency(window.getPatrimonioTotal());
+            document.getElementById('kpi-patrimonio-qtd').innerText = window.patrimonioList.length;
+        };
 
-        function renderRecentTransactions() {
+        window.renderRecentTransactions = function() {
             const tbody = document.getElementById('dash-recent-tbody');
             tbody.innerHTML = '';
 
             const search = document.getElementById('dash-search')?.value.toLowerCase() || '';
 
             let combined = [
-                ...entradasList.map(e => ({ ...e, isEntrada: true, desc: e.pessoa })),
-                ...saidasList.map(s => ({ ...s, isEntrada: false }))
+                ...window.entradasList.map(e => ({ ...e, isEntrada: true, desc: e.pessoa })),
+                ...window.saidasList.map(s => ({ ...s, isEntrada: false }))
             ];
 
             if (search) {
-                combined = combined.filter(c => c.desc.toLowerCase().includes(search) || (c.obs && c.obs.toLowerCase().includes(search)));
+                combined = combined.filter(c => (c.desc && c.desc.toLowerCase().includes(search)) || (c.obs && c.obs.toLowerCase().includes(search)));
             }
 
             if (combined.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="px-4 py-6 text-center text-slate-500 italic">Nenhum lançamento recente registrado.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="5" class="px-4 py-6 text-center text-slate-500 italic">Nenhum lançamento registrado.</td></tr>`;
                 return;
             }
 
             combined.sort((a,b) => new Date(b.data) - new Date(a.data)).slice(0, 6).forEach(t => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td class="px-4 py-3 font-mono">${formatDate(t.data)}</td>
+                    <td class="px-4 py-3 font-mono">${window.formatDate(t.data)}</td>
                     <td class="px-4 py-3 font-black ${t.isEntrada ? 'text-emerald-400' : 'text-rose-400'}">${t.isEntrada ? 'ENTRADA' : 'SAÍDA'}</td>
                     <td class="px-4 py-3">${t.area}</td>
                     <td class="px-4 py-3 font-bold">${t.desc}</td>
-                    <td class="px-4 py-3 font-black text-right ${t.isEntrada ? 'text-white' : 'text-slate-300'}">${t.isEntrada ? '+' : '-'} ${formatCurrency(t.valor)}</td>
+                    <td class="px-4 py-3 font-black text-right ${t.isEntrada ? 'text-white' : 'text-slate-300'}">${t.isEntrada ? '+' : '-'} ${window.formatCurrency(t.valor)}</td>
                 `;
                 tbody.appendChild(tr);
             });
-        }
+        };
 
-        /* TABELA DE ENTRADAS COM FILTRO AVANÇADO */
-        function renderEntradasTable() {
+        window.renderEntradasTable = function() {
             const tbody = document.getElementById('entradas-tbody');
             tbody.innerHTML = '';
 
@@ -1188,18 +1087,18 @@
             const area = document.getElementById('filter-entrada-area')?.value || 'TODAS';
             const tipo = document.getElementById('filter-entrada-tipo')?.value || 'TODOS';
 
-            let filtered = entradasList;
+            let filtered = window.entradasList;
 
             if (area !== 'TODAS') filtered = filtered.filter(e => e.area === area);
             if (tipo !== 'TODOS') filtered = filtered.filter(e => e.tipo === tipo);
             if (search) filtered = filtered.filter(e => e.pessoa.toLowerCase().includes(search) || (e.obs && e.obs.toLowerCase().includes(search)));
 
             if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" class="px-4 py-6 text-center text-slate-500 italic">Nenhuma entrada cadastrada com os filtros aplicados.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="7" class="px-4 py-6 text-center text-slate-500 italic">Nenhuma entrada cadastrada.</td></tr>`;
                 return;
             }
 
-            const canViewTithe = activeUser && (activeUser.isOwner || activeUser.dizimosAccess);
+            const canViewTithe = window.activeUser && (window.activeUser.isOwner || window.activeUser.dizimosAccess);
 
             filtered.forEach(e => {
                 let nomeDisplay = e.pessoa;
@@ -1211,29 +1110,28 @@
 
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td class="px-4 py-3 font-mono">${formatDate(e.data)}</td>
-                    <td class="px-4 py-3"><span class="px-2 py-0.5 rounded bg-slate-800 text-blue-300 font-bold">${e.tipo}</span></td>
-                    <td class="px-4 py-3">${e.area}</td>
-                    <td class="px-4 py-3 font-bold">${nomeDisplay}</td>
-                    <td class="px-4 py-3 text-slate-400">${e.obs || '-'}</td>
-                    <td class="px-4 py-3 font-black text-right text-white">${formatCurrency(e.valor)}</td>
-                    <td class="px-4 py-3 text-center">
-                        <button onclick="deletarEntrada(${e.id})" class="text-slate-500 hover:text-rose-400 transition"><i class="fa-solid fa-trash-can"></i></button>
+                    <td class="px-4 py-3.5 font-mono">${window.formatDate(e.data)}</td>
+                    <td class="px-4 py-3.5"><span class="px-2.5 py-1 rounded bg-slate-800 text-blue-300 font-bold">${e.tipo}</span></td>
+                    <td class="px-4 py-3.5">${e.area}</td>
+                    <td class="px-4 py-3.5 font-bold">${nomeDisplay}</td>
+                    <td class="px-4 py-3.5 text-slate-400">${e.obs || '-'}</td>
+                    <td class="px-4 py-3.5 font-black text-right text-white">${window.formatCurrency(e.valor)}</td>
+                    <td class="px-4 py-3.5 text-center">
+                        <button type="button" onclick="deletarEntrada(${e.id})" class="text-slate-500 hover:text-rose-400 transition"><i class="fa-solid fa-trash-can"></i></button>
                     </td>
                 `;
                 tbody.appendChild(tr);
             });
-        }
+        };
 
-        /* TABELA DE SAÍDAS COM FILTRO AVANÇADO */
-        function renderSaidasTable() {
+        window.renderSaidasTable = function() {
             const tbody = document.getElementById('saidas-tbody');
             tbody.innerHTML = '';
 
             const search = document.getElementById('filter-saida-search')?.value.toLowerCase() || '';
             const cat = document.getElementById('filter-saida-cat')?.value || 'TODAS';
 
-            let filtered = saidasList;
+            let filtered = window.saidasList;
             if (cat !== 'TODAS') filtered = filtered.filter(s => s.categoria === cat);
             if (search) filtered = filtered.filter(s => s.desc.toLowerCase().includes(search));
 
@@ -1245,82 +1143,79 @@
             filtered.forEach(s => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td class="px-4 py-3 font-mono">${formatDate(s.data)}</td>
-                    <td class="px-4 py-3 font-bold text-slate-200">${s.categoria}</td>
-                    <td class="px-4 py-3">${s.area}</td>
-                    <td class="px-4 py-3 font-bold text-white">${s.desc}</td>
-                    <td class="px-4 py-3">${s.patrimonio ? '<span class="text-amber-400 font-bold"><i class="fa-solid fa-check"></i> Sim</span>' : '<span class="text-slate-500">Não</span>'}</td>
-                    <td class="px-4 py-3 font-black text-right text-slate-200">${formatCurrency(s.valor)}</td>
-                    <td class="px-4 py-3 text-center">
-                        <button onclick="deletarSaida(${s.id})" class="text-slate-500 hover:text-rose-400 transition"><i class="fa-solid fa-trash-can"></i></button>
+                    <td class="px-4 py-3.5 font-mono">${window.formatDate(s.data)}</td>
+                    <td class="px-4 py-3.5 font-bold text-slate-200">${s.categoria}</td>
+                    <td class="px-4 py-3.5">${s.area}</td>
+                    <td class="px-4 py-3.5 font-bold text-white">${s.desc}</td>
+                    <td class="px-4 py-3.5">${s.patrimonio ? '<span class="text-amber-400 font-bold"><i class="fa-solid fa-check"></i> Sim</span>' : '<span class="text-slate-500">Não</span>'}</td>
+                    <td class="px-4 py-3.5 font-black text-right text-slate-200">${window.formatCurrency(s.valor)}</td>
+                    <td class="px-4 py-3.5 text-center">
+                        <button type="button" onclick="deletarSaida(${s.id})" class="text-slate-500 hover:text-rose-400 transition"><i class="fa-solid fa-trash-can"></i></button>
                     </td>
                 `;
                 tbody.appendChild(tr);
             });
-        }
+        };
 
-        /* TABELA PATRIMÔNIO */
-        function renderPatrimonioTable() {
+        window.renderPatrimonioTable = function() {
             const tbody = document.getElementById('patrimonio-tbody');
             tbody.innerHTML = '';
 
             const search = document.getElementById('filter-pat-search')?.value.toLowerCase() || '';
-            let filtered = patrimonioList;
+            let filtered = window.patrimonioList;
 
             if (search) {
                 filtered = filtered.filter(p => p.nome.toLowerCase().includes(search) || p.codigo.toLowerCase().includes(search) || p.serie.toLowerCase().includes(search));
             }
 
             if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="9" class="px-4 py-6 text-center text-slate-500 italic">Nenhum equipamento cadastrado.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="9" class="px-4 py-6 text-center text-slate-500 italic">Nenhum equipamento tombado.</td></tr>`;
                 return;
             }
 
             filtered.forEach(p => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td class="px-4 py-3 font-mono font-black text-amber-400">${p.codigo}</td>
-                    <td class="px-4 py-3 font-bold text-white">${p.nome}</td>
-                    <td class="px-4 py-3 font-mono text-slate-400">${p.serie}</td>
-                    <td class="px-4 py-3">${p.local}</td>
-                    <td class="px-4 py-3 font-black text-center">${p.qtd}</td>
-                    <td class="px-4 py-3 text-right">${formatCurrency(p.valorUnit)}</td>
-                    <td class="px-4 py-3 font-black text-right text-white">${formatCurrency(p.total)}</td>
-                    <td class="px-4 py-3 text-center">
-                        <span class="bg-slate-800 text-blue-400 px-2 py-0.5 rounded text-[10px] font-bold"><i class="fa-solid fa-file-pdf"></i> NF.pdf</span>
+                    <td class="px-4 py-3.5 font-mono font-black text-amber-400">${p.codigo}</td>
+                    <td class="px-4 py-3.5 font-bold text-white">${p.nome}</td>
+                    <td class="px-4 py-3.5 font-mono text-slate-400">${p.serie}</td>
+                    <td class="px-4 py-3.5">${p.local}</td>
+                    <td class="px-4 py-3.5 font-black text-center">${p.qtd}</td>
+                    <td class="px-4 py-3.5 text-right">${window.formatCurrency(p.valorUnit)}</td>
+                    <td class="px-4 py-3.5 font-black text-right text-white">${window.formatCurrency(p.total)}</td>
+                    <td class="px-4 py-3.5 text-center">
+                        <span class="bg-slate-800 text-blue-400 px-2.5 py-1 rounded text-[10px] font-bold"><i class="fa-solid fa-file-pdf"></i> NF.pdf</span>
                     </td>
-                    <td class="px-4 py-3 text-center">
-                        <button onclick="deletarPatrimonio(${p.id})" class="text-slate-500 hover:text-rose-400"><i class="fa-solid fa-trash-can"></i></button>
+                    <td class="px-4 py-3.5 text-center">
+                        <button type="button" onclick="deletarPatrimonio(${p.id})" class="text-slate-500 hover:text-rose-400"><i class="fa-solid fa-trash-can"></i></button>
                     </td>
                 `;
                 tbody.appendChild(tr);
             });
-        }
+        };
 
-        /* PRESTAÇÃO DE CONTAS */
-        function renderPrestacaoDeContas() {
-            const ent = getEntradasTotal();
-            const sai = getSaidasTotal();
-            document.getElementById('report-arrecadado').innerText = formatCurrency(ent);
-            document.getElementById('report-gastos').innerText = formatCurrency(sai);
-            document.getElementById('report-sobra').innerText = formatCurrency(ent - sai);
-        }
+        window.renderPrestacaoDeContas = function() {
+            const ent = window.getEntradasTotal();
+            const sai = window.getSaidasTotal();
+            document.getElementById('report-arrecadado').innerText = window.formatCurrency(ent);
+            document.getElementById('report-gastos').innerText = window.formatCurrency(sai);
+            document.getElementById('report-sobra').innerText = window.formatCurrency(ent - sai);
+        };
 
-        /* SEÇÃO DE USUÁRIOS COM RESTRIÇÃO ABSOLUTA PARA BRAYAN */
-        function renderUsersSection() {
+        window.renderUsersSection = function() {
             const containerBtn = document.getElementById('new-user-btn-container');
-            const isBrayan = activeUser && activeUser.isOwner;
+            const isBrayan = window.activeUser && window.activeUser.isOwner;
 
             if (isBrayan) {
                 containerBtn.innerHTML = `
-                    <button onclick="openModal('modal-usuario')" class="btn-royal-3d px-3 py-1.5 rounded-lg text-xs font-black">
+                    <button type="button" onclick="openModal('modal-usuario')" class="btn-royal-3d px-3.5 py-2 rounded-xl text-xs font-black">
                         + Cadastrar Usuário
                     </button>
                 `;
             } else {
                 containerBtn.innerHTML = `
-                    <span class="text-[10px] bg-slate-800 text-amber-400 px-2 py-1 rounded border border-slate-700 font-bold" title="Somente Brayan pode criar usuários">
-                        <i class="fa-solid fa-lock"></i> Criar Conta Restrito
+                    <span class="text-[10px] bg-slate-800 text-amber-400 px-3 py-1.5 rounded-xl border border-slate-700 font-bold">
+                        <i class="fa-solid fa-lock"></i> Exclusivo ADM
                     </span>
                 `;
             }
@@ -1328,7 +1223,7 @@
             const tbody = document.getElementById('users-tbody');
             tbody.innerHTML = '';
 
-            usuariosList.forEach(u => {
+            window.usuariosList.forEach(u => {
                 const tr = document.createElement('tr');
                 let deleteAction = '';
 
@@ -1336,51 +1231,49 @@
                     if (u.isOwner) {
                         deleteAction = `<span class="text-[10px] text-amber-400 font-bold">Dono ADM</span>`;
                     } else {
-                        deleteAction = `<button onclick="deletarUsuario(${u.id})" class="text-rose-400 hover:bg-rose-500/20 px-2 py-1 rounded text-xs"><i class="fa-solid fa-user-minus"></i> Apagar</button>`;
+                        deleteAction = `<button type="button" onclick="deletarUsuario(${u.id})" class="text-rose-400 hover:bg-rose-500/20 px-2 py-1 rounded text-xs"><i class="fa-solid fa-user-minus"></i> Apagar</button>`;
                     }
                 } else {
-                    deleteAction = `<span class="text-[10px] text-slate-600 font-bold"><i class="fa-solid fa-lock text-[9px]"></i> Restrito</span>`;
+                    deleteAction = `<span class="text-[10px] text-slate-600 font-bold"><i class="fa-solid fa-lock"></i> Restrito</span>`;
                 }
 
                 tr.innerHTML = `
-                    <td class="px-3 py-2.5 font-bold text-white">${u.nome} ${u.isOwner ? '<i class="fa-solid fa-crown text-amber-400 text-[10px]"></i>' : ''}</td>
-                    <td class="px-3 py-2.5 text-slate-300">${u.cargo}</td>
-                    <td class="px-3 py-2.5 font-bold">${u.dizimosAccess ? '<span class="text-emerald-400">Sim</span>' : '<span class="text-slate-500">Não</span>'}</td>
-                    <td class="px-3 py-2.5 text-center">${deleteAction}</td>
+                    <td class="px-3 py-3 font-bold text-white">${u.nome} ${u.isOwner ? '<i class="fa-solid fa-crown text-amber-400 text-[10px]"></i>' : ''}</td>
+                    <td class="px-3 py-3 text-slate-300">${u.cargo}</td>
+                    <td class="px-3 py-3 font-bold">${u.dizimosAccess ? '<span class="text-emerald-400">Sim</span>' : '<span class="text-slate-500">Não</span>'}</td>
+                    <td class="px-3 py-3 text-center">${deleteAction}</td>
                 `;
                 tbody.appendChild(tr);
             });
-        }
+        };
 
-        /* HISTÓRICO DE MESES */
-        function renderHistoryTable() {
+        window.renderHistoryTable = function() {
             const tbody = document.getElementById('history-tbody');
             tbody.innerHTML = '';
-            if (historicoMeses.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" class="px-3 py-6 text-center text-slate-500 italic">Nenhum mês encerrado.</td></tr>`;
+            if (window.historicoMeses.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="px-3 py-6 text-center text-slate-500 italic">Nenhum histórico arquivado.</td></tr>`;
                 return;
             }
-            historicoMeses.forEach(h => {
+            window.historicoMeses.forEach(h => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td class="px-3 py-2 font-bold text-white">${h.mesAno}</td>
-                    <td class="px-3 py-2 text-emerald-400 font-bold">${formatCurrency(h.entradas)}</td>
-                    <td class="px-3 py-2 text-rose-400 font-bold">${formatCurrency(h.saidas)}</td>
-                    <td class="px-3 py-2 font-black text-right text-white">${formatCurrency(h.saldoMes)}</td>
+                    <td class="px-3 py-2.5 font-bold text-white">${h.mesAno}</td>
+                    <td class="px-3 py-2.5 text-emerald-400 font-bold">${window.formatCurrency(h.entradas)}</td>
+                    <td class="px-3 py-2.5 text-rose-400 font-bold">${window.formatCurrency(h.saidas)}</td>
+                    <td class="px-3 py-2.5 font-black text-right text-white">${window.formatCurrency(h.saldoMes)}</td>
                 `;
                 tbody.appendChild(tr);
             });
-        }
+        };
 
-        /* ACOES DOS FORMULÁRIOS */
-        function toggleDizimistaField() {
+        window.toggleDizimistaField = function() {
             const tipo = document.getElementById('in-tipo').value;
             const field = document.getElementById('field-dizimista');
             if (tipo === "Dízimo") field.classList.remove('hidden');
             else field.classList.add('hidden');
-        }
+        };
 
-        function salvarEntrada(e) {
+        window.salvarEntrada = function(e) {
             e.preventDefault();
             const tipo = document.getElementById('in-tipo').value;
             const area = document.getElementById('in-area').value;
@@ -1389,7 +1282,7 @@
             const obs = document.getElementById('in-obs').value;
             const nomeDizimista = document.getElementById('in-dizimista-nome').value;
 
-            entradasList.unshift({
+            window.entradasList.unshift({
                 id: Date.now(),
                 data: data,
                 tipo: tipo,
@@ -1399,24 +1292,24 @@
                 valor: valor
             });
 
-            saldoAtualAcumulado += valor;
-            closeModal('modal-entrada');
+            window.saldoAtualAcumulado += valor;
+            window.persistirTudo();
+            window.closeModal('modal-entrada');
             document.getElementById('form-entrada').reset();
-            renderAll();
-            showNotice("Entrada Registrada", "Entrada cadastrada com sucesso!");
-        }
+            window.renderAll();
+        };
 
-        function deletarEntrada(id) {
-            const idx = entradasList.findIndex(e => e.id === id);
+        window.deletarEntrada = function(id) {
+            const idx = window.entradasList.findIndex(e => e.id === id);
             if (idx !== -1) {
-                saldoAtualAcumulado -= entradasList[idx].valor;
-                entradasList.splice(idx, 1);
-                renderAll();
-                showNotice("Removido", "Lançamento excluído.");
+                window.saldoAtualAcumulado -= window.entradasList[idx].valor;
+                window.entradasList.splice(idx, 1);
+                window.persistirTudo();
+                window.renderAll();
             }
-        }
+        };
 
-        function salvarSaida(e) {
+        window.salvarSaida = function(e) {
             e.preventDefault();
             const cat = document.getElementById('out-cat').value;
             const area = document.getElementById('out-area').value;
@@ -1425,7 +1318,7 @@
             const data = document.getElementById('out-data').value;
             const isPatrimonio = document.getElementById('out-is-patrimonio').checked;
 
-            saidasList.unshift({
+            window.saidasList.unshift({
                 id: Date.now(),
                 data: data,
                 categoria: cat,
@@ -1435,31 +1328,31 @@
                 patrimonio: isPatrimonio
             });
 
-            saldoAtualAcumulado -= valor;
-            closeModal('modal-saida');
+            window.saldoAtualAcumulado -= valor;
+            window.persistirTudo();
+            window.closeModal('modal-saida');
             document.getElementById('form-saida').reset();
 
             if (isPatrimonio) {
                 document.getElementById('pat-nome').value = desc;
                 document.getElementById('pat-valor').value = valor;
-                openModal('modal-patrimonio');
+                window.openModal('modal-patrimonio');
             }
 
-            renderAll();
-            showNotice("Saída Cadastrada", "Saída registrada no plano de contas.");
-        }
+            window.renderAll();
+        };
 
-        function deletarSaida(id) {
-            const idx = saidasList.findIndex(s => s.id === id);
+        window.deletarSaida = function(id) {
+            const idx = window.saidasList.findIndex(s => s.id === id);
             if (idx !== -1) {
-                saldoAtualAcumulado += saidasList[idx].valor;
-                saidasList.splice(idx, 1);
-                renderAll();
-                showNotice("Removido", "Registro de saída excluído.");
+                window.saldoAtualAcumulado += window.saidasList[idx].valor;
+                window.saidasList.splice(idx, 1);
+                window.persistirTudo();
+                window.renderAll();
             }
-        }
+        };
 
-        function salvarPatrimonio(e) {
+        window.salvarPatrimonio = function(e) {
             e.preventDefault();
             const nome = document.getElementById('pat-nome').value;
             const serie = document.getElementById('pat-serie').value;
@@ -1467,9 +1360,9 @@
             const qtd = parseInt(document.getElementById('pat-qtd').value);
             const valor = parseFloat(document.getElementById('pat-valor').value);
 
-            patrimonioList.unshift({
+            window.patrimonioList.unshift({
                 id: Date.now(),
-                codigo: `GETS-${String(patrimonioList.length + 1).padStart(3, '0')}`,
+                codigo: `GETS-${String(window.patrimonioList.length + 1).padStart(3, '0')}`,
                 nome: nome,
                 serie: serie,
                 local: local,
@@ -1478,25 +1371,25 @@
                 total: qtd * valor
             });
 
-            closeModal('modal-patrimonio');
+            window.persistirTudo();
+            window.closeModal('modal-patrimonio');
             document.getElementById('form-patrimonio').reset();
-            renderAll();
-            showNotice("Patrimônio Tombado", "Item cadastrado com sucesso no estoque.");
-        }
+            window.renderAll();
+        };
 
-        function deletarPatrimonio(id) {
-            const idx = patrimonioList.findIndex(p => p.id === id);
+        window.deletarPatrimonio = function(id) {
+            const idx = window.patrimonioList.findIndex(p => p.id === id);
             if (idx !== -1) {
-                patrimonioList.splice(idx, 1);
-                renderAll();
-                showNotice("Removido", "Item removido do patrimônio.");
+                window.patrimonioList.splice(idx, 1);
+                window.persistirTudo();
+                window.renderAll();
             }
-        }
+        };
 
-        function salvarUsuario(e) {
+        window.salvarUsuario = function(e) {
             e.preventDefault();
-            if (!activeUser || !activeUser.isOwner) {
-                showNotice("Acesso Negado", "Apenas o ADM Brayan pode criar usuários.");
+            if (!window.activeUser || !window.activeUser.isOwner) {
+                window.showNotice("Restrito", "Apenas Brayan pode criar usuários.");
                 return;
             }
 
@@ -1505,7 +1398,7 @@
             const pass = document.getElementById('usr-pass').value.trim();
             const cargo = document.getElementById('usr-cargo').value;
 
-            usuariosList.push({
+            window.usuariosList.push({
                 id: Date.now(),
                 user: user,
                 pass: pass,
@@ -1515,56 +1408,63 @@
                 dizimosAccess: true
             });
 
-            closeModal('modal-usuario');
+            window.persistirTudo();
+            window.closeModal('modal-usuario');
             document.getElementById('form-usuario').reset();
-            renderUsersSection();
-            showNotice("Usuário Criado", `Conta de ${nome} criada com sucesso!`);
-        }
+            window.renderUsersSection();
+        };
 
-        function deletarUsuario(id) {
-            if (!activeUser || !activeUser.isOwner) {
-                showNotice("Acesso Negado", "Apenas o ADM Brayan pode excluir contas.");
-                return;
-            }
+        window.deletarUsuario = function(id) {
+            if (!window.activeUser || !window.activeUser.isOwner) return;
 
-            const idx = usuariosList.findIndex(u => u.id === id);
+            const idx = window.usuariosList.findIndex(u => u.id === id);
             if (idx !== -1) {
-                const uNome = usuariosList[idx].nome;
-                usuariosList.splice(idx, 1);
-                renderUsersSection();
-                showNotice("Usuário Removido", `A conta de ${uNome} foi permanentemente apagada.`);
+                window.usuariosList.splice(idx, 1);
+                window.persistirTudo();
+                window.renderUsersSection();
             }
-        }
+        };
 
-        function executarViradaDoMes() {
-            const ent = getEntradasTotal();
-            const sai = getSaidasTotal();
+        window.executarViradaDoMes = function() {
+            const ent = window.getEntradasTotal();
+            const sai = window.getSaidasTotal();
             const mesNome = new Date().toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
 
-            historicoMeses.unshift({
+            window.historicoMeses.unshift({
                 mesAno: mesNome.charAt(0).toUpperCase() + mesNome.slice(1),
                 entradas: ent,
                 saidas: sai,
                 saldoMes: ent - sai
             });
 
-            entradasList = [];
-            saidasList = [];
+            window.entradasList = [];
+            window.saidasList = [];
 
-            renderAll();
-            showNotice("Virada do Mês Efetuada", "Receitas e despesas zeradas para o novo ciclo. O Saldo Atual em Caixa foi mantido!");
-        }
+            window.persistirTudo();
+            window.renderAll();
+            window.showNotice("Virada Concluída", "Entradas e Saídas foram zeradas para o novo mês. O Saldo Atual em Caixa permanece intacto!");
+        };
 
-        /* GRÁFICOS */
-        function initCharts() {
-            const ctxFluxo = document.getElementById('chartFluxo').getContext('2d');
-            chartFluxoObj = new Chart(ctxFluxo, {
+        window.initCharts = function() {
+            const winDash = document.getElementById('win-dashboard');
+            if (!winDash || winDash.classList.contains('hidden')) return;
+
+            const canvasFluxo = document.getElementById('chartFluxo');
+            const canvasDespesas = document.getElementById('chartDespesas');
+
+            if (!canvasFluxo || !canvasDespesas) return;
+
+            if (window.chartFluxoObj) window.chartFluxoObj.destroy();
+            if (window.chartDespesasObj) window.chartDespesasObj.destroy();
+
+            const ctxFluxo = canvasFluxo.getContext('2d');
+            window.chartFluxoObj = new Chart(ctxFluxo, {
                 type: 'bar',
                 data: {
-                    labels: ['Mês Passado', 'Mês Vigente'],
+                    labels: ['Mês Anterior', 'Mês Vigente'],
                     datasets: [
-                        { label: 'Entradas (R$)', data: [0, 0], backgroundColor: '#3b82f6', borderRadius: 8 },
-                        { label: 'Saídas (R$)', data: [0, 0], backgroundColor: '#f43f5e', borderRadius: 8 }
+                        { label: 'Entradas (R$)', data: [0, window.getEntradasTotal()], backgroundColor: '#10b981', borderRadius: 8 },
+                        { label: 'Saídas (R$)', data: [0, window.getSaidasTotal()], backgroundColor: '#f43f5e', borderRadius: 8 }
                     ]
                 },
                 options: {
@@ -1573,17 +1473,17 @@
                     plugins: { legend: { labels: { color: '#cbd5e1' } } },
                     scales: {
                         x: { ticks: { color: '#94a3b8' }, grid: { display: false } },
-                        y: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } }
+                        y: { ticks: { color: '#94a3b8' }, grid: { color: '#1f293b' } }
                     }
                 }
             });
 
-            const ctxDespesas = document.getElementById('chartDespesas').getContext('2d');
-            chartDespesasObj = new Chart(ctxDespesas, {
+            const ctxDespesas = canvasDespesas.getContext('2d');
+            window.chartDespesasObj = new Chart(ctxDespesas, {
                 type: 'doughnut',
                 data: {
                     labels: ['Sem Despesas'],
-                    datasets: [{ data: [1], backgroundColor: ['#334155'] }]
+                    datasets: [{ data: [1], backgroundColor: ['#374151'] }]
                 },
                 options: {
                     responsive: true,
@@ -1591,52 +1491,61 @@
                     plugins: { legend: { position: 'bottom', labels: { color: '#cbd5e1' } } }
                 }
             });
-        }
 
-        function updateCharts() {
-            if (!chartFluxoObj) return;
+            window.updateCharts();
+        };
 
-            chartFluxoObj.data.datasets[0].data = [0, getEntradasTotal()];
-            chartFluxoObj.data.datasets[1].data = [0, getSaidasTotal()];
-            chartFluxoObj.update();
+        window.updateCharts = function() {
+            if (!window.chartFluxoObj || !window.chartDespesasObj) return;
+
+            window.chartFluxoObj.data.datasets[0].data = [0, window.getEntradasTotal()];
+            window.chartFluxoObj.data.datasets[1].data = [0, window.getSaidasTotal()];
+            window.chartFluxoObj.update();
 
             const catMap = {};
-            saidasList.forEach(s => { catMap[s.categoria] = (catMap[s.categoria] || 0) + s.valor; });
+            window.saidasList.forEach(s => { catMap[s.categoria] = (catMap[s.categoria] || 0) + s.valor; });
 
             const labels = Object.keys(catMap);
             const values = Object.values(catMap);
 
             if (labels.length === 0) {
-                chartDespesasObj.data.labels = ['Sem Despesas'];
-                chartDespesasObj.data.datasets[0].data = [1];
-                chartDespesasObj.data.datasets[0].backgroundColor = ['#334155'];
+                window.chartDespesasObj.data.labels = ['Sem Despesas'];
+                window.chartDespesasObj.data.datasets[0].data = [1];
+                window.chartDespesasObj.data.datasets[0].backgroundColor = ['#374151'];
             } else {
-                chartDespesasObj.data.labels = labels;
-                chartDespesasObj.data.datasets[0].data = values;
-                chartDespesasObj.data.datasets[0].backgroundColor = ['#3b82f6', '#f59e0b', '#ec4899', '#10b981', '#8b5cf6'];
+                window.chartDespesasObj.data.labels = labels;
+                window.chartDespesasObj.data.datasets[0].data = values;
+                window.chartDespesasObj.data.datasets[0].backgroundColor = ['#3b82f6', '#f59e0b', '#ec4899', '#10b981', '#8b5cf6'];
             }
-            chartDespesasObj.update();
-        }
+            window.chartDespesasObj.update();
+        };
 
-        /* AUXILIARES */
-        function formatCurrency(val) {
+        window.formatCurrency = function(val) {
             return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(val || 0);
-        }
+        };
 
-        function formatDate(dStr) {
+        window.formatDate = function(dStr) {
             if (!dStr) return '';
             const p = dStr.split('-');
             return `${p[2]}/${p[1]}/${p[0]}`;
-        }
+        };
 
-        function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
-        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+        window.openModal = function(id) { document.getElementById(id).classList.remove('hidden'); };
+        window.closeModal = function(id) { document.getElementById(id).classList.add('hidden'); };
 
-        function showNotice(title, msg) {
+        window.showNotice = function(title, msg) {
             document.getElementById('msg-title').innerText = title;
             document.getElementById('msg-body').innerText = msg;
-            openModal('modal-msg');
-        }
+            window.openModal('modal-msg');
+        };
+
+        window.onload = function() {
+            window.carregarDadosStorage();
+            window.startLiveClock();
+            const today = new Date().toISOString().split('T')[0];
+            if(document.getElementById('in-data')) document.getElementById('in-data').value = today;
+            if(document.getElementById('out-data')) document.getElementById('out-data').value = today;
+        };
     </script>
 </body>
 </html>
