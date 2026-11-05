@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema Contábil e Administrativo - Igreja GETSÊMANI</title>
+    <title>Getsemani do morro de Satana - Igreja BATISTA</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -132,10 +132,10 @@
 </head>
 <body class="min-h-screen flex flex-col justify-between relative overflow-x-hidden">
 
-    <!-- Watermark Brayan Systemy -->
+    <!-- Watermark Brayan System -->
     <div class="watermark-bg">
         <i class="fa-solid fa-shield-halved text-amber-400 opacity-60"></i>
-        <span>brayan.sistemy</span>
+        <span>brayan.system</span>
     </div>
 
     <!-- APP CONTAINER -->
@@ -155,8 +155,8 @@
                     </div>
                 </div>
 
-                <h1 class="text-2xl font-black text-white tracking-wide">IGREJA GETSÊMANI</h1>
-                <p class="text-xs text-slate-400 mt-1 uppercase tracking-widest font-semibold">Sistema Contábil & Administrativo</p>
+                <h1 class="text-2xl font-black text-white tracking-wide">IGREJA BATISTA</h1>
+                <p class="text-xs text-slate-400 mt-1 uppercase tracking-widest font-semibold">Getsemani do morro de Santana</p>
 
                 <form id="loginForm" class="mt-6 space-y-4 text-left" onsubmit="handleLogin(event)">
                     <div>
@@ -186,7 +186,7 @@
                 </form>
 
                 <div class="mt-6 pt-4 border-t border-slate-800 text-center">
-                    <p class="text-[11px] text-slate-500">Desenvolvido sob medida por <span class="text-amber-400 font-bold">brayan.sistemy</span></p>
+                    <p class="text-[11px] text-slate-500">Desenvolvido sob medida por <span class="text-amber-400 font-bold">brayan.system</span></p>
                 </div>
             </div>
         </div>
@@ -235,7 +235,7 @@
                         </div>
                         <div class="text-left">
                             <p id="userNameDisplay" class="text-xs font-bold text-white">Brayan (ADM)</p>
-                            <p id="userRoleDisplay" class="text-[10px] text-slate-400">Dono e ADM Geral</p>
+                            <p id="userRoleDisplay" class="text-[10px] text-slate-400">ADM Geral</p>
                         </div>
                     </div>
 
@@ -500,7 +500,7 @@
 
                     <div class="pt-6 border-t border-slate-800 text-center text-xs text-slate-500 flex justify-between items-center">
                         <span>Aprovado pela Tesouraria e ADM Geral</span>
-                        <span class="font-bold text-slate-400">brayan.sistemy</span>
+                        <span class="font-bold text-slate-400">brayan.system</span>
                     </div>
                 </div>
             </section>
@@ -747,7 +747,7 @@
         <!-- FOOTER BRANDING -->
         <footer id="mainFooter" class="hidden no-print mt-12 py-4 text-center border-t border-slate-900">
             <p class="text-xs text-slate-500">
-                Igreja GETSÊMANI &copy; Sistema Oficial de Gestão Financeira e Administrativa - Marca Registrada <span class="text-amber-400 font-bold">brayan.sistemy</span>
+                Igreja GETSÊMANI &copy; Sistema Oficial de Gestão Financeira e Administrativa - Marca Registrada <span class="text-amber-400 font-bold">brayan.system</span>
             </p>
         </footer>
     </div>
@@ -952,11 +952,10 @@
                     <div>
                         <label class="block text-xs text-slate-300 mb-1">Dia de Reunião</label>
                         <select id="cellDay" class="w-full p-2.5 rounded-xl glass-input text-xs">
+                            <option value="Terça-feira">Terça-feira</option>
                             <option value="Quarta-feira">Quarta-feira</option>
-                            <option value="Quinta-feira">Quinta-feira</option>
                             <option value="Sexta-feira">Sexta-feira</option>
                             <option value="Sábado">Sábado</option>
-                            <option value="Domingo">Domingo</option>
                         </select>
                     </div>
                     <div>
@@ -1951,7 +1950,7 @@
             const tbody = document.getElementById('usersTableBody');
             tbody.innerHTML = '';
 
-            const isAdm = db.activeUser.username === 'bncanuto' || db.activeUser.role === 'Dono e ADM Geral';
+            const isAdm = db.activeUser.username === 'bncanuto' || db.activeUser.role === 'ADM Geral';
 
             db.users.forEach(u => {
                 const tr = document.createElement('tr');
