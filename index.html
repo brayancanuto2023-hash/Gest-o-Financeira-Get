@@ -1,1 +1,2065 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GETSÊMANI - Sistema de Gestão Financeira e Ministerial</title>
+    <!-- Chart.js para gráficos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- FontAwesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0f1d;
+            --bg-card: rgba(18, 26, 47, 0.75);
+            --bg-card-hover: rgba(28, 40, 70, 0.85);
+            --primary: #2563eb;
+            --primary-glow: rgba(37, 99, 235, 0.4);
+            --accent: #f59e0b;
+            --accent-glow: rgba(245, 158, 11, 0.3);
+            --success: #10b981;
+            --danger: #ef4444;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.12);
+        }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(37, 99, 235, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(245, 158, 11, 0.1) 0%, transparent 40%);
+            background-attachment: fixed;
+            overflow-x: hidden;
+        }
+
+        /* Marca d'água fixa */
+        .watermark {
+            position: fixed;
+            bottom: 15px;
+            right: 20px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: rgba(255, 255, 255, 0.12);
+            letter-spacing: 2px;
+            pointer-events: none;
+            z-index: 9999;
+            text-transform: lowercase;
+            font-style: italic;
+        }
+
+        /* Tela de Login */
+        #login-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: var(--bg-dark);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: radial-gradient(circle at center, rgba(37, 99, 235, 0.2), transparent 70%);
+        }
+
+        .login-card {
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(16px);
+            padding: 40px;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 20px var(--primary-glow);
+            text-align: center;
+        }
+
+        .login-card h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .login-card p {
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), #1d4ed8);
+            color: white;
+            width: 100%;
+            box-shadow: 0 4px 15px var(--primary-glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px var(--primary-glow);
+        }
+
+        /* Layout Principal */
+        #app-container {
+            display: none;
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Sidebar */
+        .sidebar {
+            width: 280px;
+            background: rgba(10, 15, 29, 0.95);
+            border-right: 1px solid var(--border);
+            backdrop-filter: blur(20px);
+            display: flex;
+            flex-direction: column;
+            padding: 24px 16px;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 12px 24px 12px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 24px;
+        }
+
+        .brand-logo {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        .brand-text h1 {
+            font-size: 1.2rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-text p {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+        }
+
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex: 1;
+        }
+
+        .nav-item {
+            padding: 12px 16px;
+            border-radius: 12px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: rgba(37, 99, 235, 0.15);
+            color: #fff;
+            border: 1px solid rgba(37, 99, 235, 0.3);
+        }
+
+        .nav-item i {
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* User Profile na Sidebar */
+        .user-profile-widget {
+            padding: 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: auto;
+        }
+
+        .profile-img-container {
+            position: relative;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid var(--primary);
+            cursor: pointer;
+        }
+
+        .profile-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-info {
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .profile-info h4 {
+            font-size: 0.85rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .profile-info p {
+            font-size: 0.7rem;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* Conteúdo Principal */
+        .main-content {
+            margin-left: 280px;
+            flex: 1;
+            padding: 30px;
+            max-width: calc(100% - 280px);
+        }
+
+        /* Header Principal */
+        .top-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            background: var(--bg-card);
+            padding: 20px 30px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+        }
+
+        .header-title h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+
+        .header-title p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .realtime-widget {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: rgba(0,0,0,0.3);
+            padding: 10px 20px;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+        }
+
+        .clock-item {
+            text-align: right;
+        }
+
+        .clock-item #time {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .clock-item #date {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Seções / Janelas */
+        .view-section {
+            display: none;
+        }
+
+        .view-section.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Cards de Métricas */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .metric-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 24px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255,255,255,0.2);
+        }
+
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--primary);
+        }
+
+        .metric-card.success::before { background: var(--success); }
+        .metric-card.danger::before { background: var(--danger); }
+        .metric-card.accent::before { background: var(--accent); }
+
+        .metric-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .metric-title {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .metric-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .metric-badge {
+            font-size: 0.75rem;
+            padding: 4px 8px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-weight: 600;
+        }
+
+        .badge-success { background: rgba(16, 185, 129, 0.15); color: var(--success); }
+        .badge-danger { background: rgba(239, 68, 68, 0.15); color: var(--danger); }
+
+        /* Gráficos e Tabelas Container */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+            margin-bottom: 30px;
+        }
+
+        .card-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 24px;
+            backdrop-filter: blur(10px);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-header h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        /* Tabelas */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            padding: 14px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 14px;
+            font-size: 0.9rem;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+        }
+
+        tr:hover td {
+            background: rgba(255,255,255,0.02);
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: white;
+        }
+
+        .btn-edit { background: rgba(245, 158, 11, 0.2); color: var(--accent); }
+        .btn-edit:hover { background: var(--accent); color: black; }
+        .btn-delete { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
+        .btn-delete:hover { background: var(--danger); color: white; }
+
+        /* Filtros */
+        .filter-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-bar input, .filter-bar select {
+            max-width: 220px;
+        }
+
+        /* Modais */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-card {
+            background: #0f172a;
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            width: 100%;
+            max-width: 550px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 30px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.4rem;
+            cursor: pointer;
+        }
+
+        /* Área de Impressão / PDF Projeção */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #print-area, #print-area * {
+                visibility: visible;
+            }
+            #print-area {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                color: #000;
+                background: #fff;
+                padding: 40px;
+            }
+            .no-print { display: none !important; }
+        }
+
+        #print-area {
+            display: none;
+        }
+
+        .print-header {
+            text-align: center;
+            border-bottom: 2px solid #000;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .print-summary {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Marca d'água -->
+    <div class="watermark">brayan.sistemy</div>
+
+    <!-- Tela de Login -->
+    <div id="login-screen">
+        <div class="login-card">
+            <div class="brand-logo" style="margin: 0 auto 15px auto; width: 60px; height: 60px; font-size: 2rem;">
+                <i class="fa-solid => fa-church"></i>
+            </div>
+            <h2>IGREJA GETSÊMANI</h2>
+            <p>Sistema de Gestão Contábil & Ministerial</p>
+            <form id="login-form" onsubmit="event.preventDefault(); handleLogin();">
+                <div class="form-group">
+                    <label>Usuário</label>
+                    <input type="text" id="login-user" class="form-control" placeholder="Digite seu usuário..." required>
+                </div>
+                <div class="form-group">
+                    <label>Senha</label>
+                    <input type="password" id="login-pass" class="form-control" placeholder="Digite sua senha..." required>
+                </div>
+                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-right-to-bracket"></i> Entrar no Sistema</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Container Principal do App -->
+    <div id="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-logo"><i class="fa-solid fa-church"></i></div>
+                <div class="brand-text">
+                    <h1>GETSÊMANI</h1>
+                    <p>GESTOR ADM v3.0</p>
+                </div>
+            </div>
+
+            <ul class="nav-menu">
+                <li class="nav-item active" onclick="switchView('dashboard')">
+                    <i class="fa-solid fa-chart-pie"></i> Painel Geral
+                </li>
+                <li class="nav-item" onclick="switchView('financas')">
+                    <i class="fa-solid fa-wallet"></i> Financeiro
+                </li>
+                <li class="nav-item" onclick="switchView('patrimonio')">
+                    <i class="fa-solid fa-boxes-stacked"></i> Patrimônio & Estoque
+                </li>
+                <li class="nav-item" onclick="switchView('membros')">
+                    <i class="fa-solid fa-users"></i> Membros & Visitantes
+                </li>
+                <li class="nav-item" onclick="switchView('celulas')">
+                    <i class="fa-solid fa-house-chimney-user"></i> Células
+                </li>
+                <li class="nav-item" onclick="switchView('agenda')">
+                    <i class="fa-solid fa-calendar-days"></i> Agenda & Lembretes
+                </li>
+                <li class="nav-item" onclick="switchView('configuracoes')">
+                    <i class="fa-solid fa-gear"></i> Configurações
+                </li>
+            </ul>
+
+            <!-- Perfil do Usuário Logado -->
+            <div class="user-profile-widget">
+                <div class="profile-img-container" onclick="triggerProfileUpload()" title="Clique para alterar foto de perfil">
+                    <img id="user-avatar" src="https://ui-avatars.com/api/?name=Admin&background=2563eb&color=fff" alt="Avatar">
+                    <input type="file" id="profile-upload-input" accept="image/*" style="display: none;" onchange="handleProfilePictureUpload(event)">
+                </div>
+                <div class="profile-info">
+                    <h4 id="user-display-name">Carregando...</h4>
+                    <p id="user-display-role">Carregando...</p>
+                </div>
+                <button onclick="handleLogout()" style="background: none; border: none; color: var(--danger); cursor: pointer;" title="Sair">
+                    <i class="fa-solid fa-power-off"></i>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Header Topo -->
+            <header class="top-header">
+                <div class="header-title">
+                    <h2 id="page-title">Painel Geral</h2>
+                    <p>Visão estratégica e transparência contábil</p>
+                </div>
+                <div class="realtime-widget">
+                    <i class="fa-regular fa-clock" style="font-size: 1.5rem; color: var(--primary);"></i>
+                    <div class="clock-item">
+                        <div id="time">00:00:00</div>
+                        <div id="date">Carregando data...</div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- 1. VISÃO DASHBOARD -->
+            <section id="view-dashboard" class="view-section active">
+                <div class="metrics-grid">
+                    <div class="metric-card success">
+                        <div class="metric-header">
+                            <span class="metric-title">Saldo Atual Permanente</span>
+                            <div class="metric-icon" style="color: var(--success);"><i class="fa-solid fa-piggy-bank"></i></div>
+                        </div>
+                        <div class="metric-value" id="dash-saldo">R$ 0,00</div>
+                        <span class="metric-badge badge-success"><i class="fa-solid fa-shield-halved"></i> Nunca Zera</span>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <span class="metric-title">Entradas do Mês</span>
+                            <div class="metric-icon" style="color: var(--primary);"><i class="fa-solid fa-arrow-trend-up"></i></div>
+                        </div>
+                        <div class="metric-value" id="dash-entradas">R$ 0,00</div>
+                        <span class="metric-badge badge-success" id="badge-entrada-status"><i class="fa-solid fa-check"></i> Receita Bruta</span>
+                    </div>
+
+                    <div class="metric-card danger">
+                        <div class="metric-header">
+                            <span class="metric-title">Saídas / Despesas do Mês</span>
+                            <div class="metric-icon" style="color: var(--danger);"><i class="fa-solid fa-arrow-trend-down"></i></div>
+                        </div>
+                        <div class="metric-value" id="dash-saidas">R$ 0,00</div>
+                        <span class="metric-badge badge-danger" id="badge-saida-status"><i class="fa-solid fa-circle-exclamation"></i> Fluxo do Mês</span>
+                    </div>
+
+                    <div class="metric-card accent">
+                        <div class="metric-header">
+                            <span class="metric-title">Total em Patrimônio</span>
+                            <div class="metric-icon" style="color: var(--accent);"><i class="fa-solid fa-vault"></i></div>
+                        </div>
+                        <div class="metric-value" id="dash-patrimonio">R$ 0,00</div>
+                        <span class="metric-badge badge-success"><i class="fa-solid fa-boxes-packing"></i> Bens da Igreja</span>
+                    </div>
+                </div>
+
+                <div class="content-grid">
+                    <div class="card-box">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-chart-column"></i> Demonstrativo do Mês</h3>
+                            <button class="btn btn-primary" onclick="generatePDFReport()" style="width: auto; padding: 8px 16px;"><i class="fa-solid fa-file-pdf"></i> Gerar Relatório PDF</button>
+                        </div>
+                        <canvas id="financialChart" height="120"></canvas>
+                    </div>
+
+                    <div class="card-box">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-pie-chart"></i> Despesas por Categoria</h3>
+                        </div>
+                        <canvas id="expensesPieChart" height="200"></canvas>
+                    </div>
+                </div>
+
+                <!-- Resumo de Transparência -->
+                <div class="card-box">
+                    <div class="card-header">
+                        <h3><i class="fa-solid fa-hand-holding-dollar"></i> Prestação de Contas e Transparência</h3>
+                    </div>
+                    <p style="color: var(--text-muted); font-size: 1rem; line-height: 1.8;" id="transparency-summary">
+                        Neste mês, arrecadamos <strong>R$ 0,00</strong>, gastamos <strong>R$ 0,00</strong> com manutenção e despesas operacionais, resultando no saldo líquido mensal de <strong>R$ 0,00</strong>.
+                    </p>
+                </div>
+            </section>
+
+            <!-- 2. VISÃO FINANCEIRO -->
+            <section id="view-financas" class="view-section">
+                <div class="card-box">
+                    <div class="card-header">
+                        <h3><i class="fa-solid fa-list-check"></i> Controle de Entradas e Saídas</h3>
+                        <div style="display: flex; gap: 10px;">
+                            <button class="btn btn-primary" onclick="openModalTransaction('entrada')" style="width: auto;"><i class="fa-solid fa-plus"></i> Nova Entrada</button>
+                            <button class="btn btn-primary" onclick="openModalTransaction('saida')" style="width: auto; background: var(--danger);"><i class="fa-solid fa-minus"></i> Nova Saída</button>
+                        </div>
+                    </div>
+
+                    <div class="filter-bar">
+                        <input type="text" id="filter-fin-desc" class="form-control" placeholder="Filtrar por descrição..." oninput="renderTransactions()">
+                        <select id="filter-fin-tipo" class="form-control" onchange="renderTransactions()">
+                            <option value="">Todos os Tipos</option>
+                            <option value="entrada">Entradas</option>
+                            <option value="saida">Saídas</option>
+                        </select>
+                        <select id="filter-fin-cat" class="form-control" onchange="renderTransactions()">
+                            <option value="">Todas as Categorias</option>
+                            <option value="Dízimo">Dízimos</option>
+                            <option value="Oferta">Ofertas</option>
+                            <option value="Luz">Conta de Luz</option>
+                            <option value="Água">Conta de Água</option>
+                            <option value="Internet">Internet</option>
+                            <option value="Manutenção">Manutenção</option>
+                            <option value="Outros">Outros</option>
+                        </select>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Tipo</th>
+                                    <th>Categoria</th>
+                                    <th>Descrição / Ofertante</th>
+                                    <th>Valor</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-transactions">
+                                <!-- Preenchido dinamicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. VISÃO PATRIMÔNIO & ESTOQUE -->
+            <section id="view-patrimonio" class="view-section">
+                <div class="card-box">
+                    <div class="card-header">
+                        <h3><i class="fa-solid fa-boxes-stacked"></i> Ficha de Patrimônio e Equipamentos</h3>
+                        <button class="btn btn-primary" onclick="openModalPatrimonio()" style="width: auto;"><i class="fa-solid fa-plus"></i> Cadastrar Item</button>
+                    </div>
+
+                    <div class="filter-bar">
+                        <input type="text" id="filter-pat-search" class="form-control" placeholder="Buscar por nome ou nº de série..." oninput="renderPatrimonio()">
+                        <input type="text" id="filter-pat-local" class="form-control" placeholder="Filtrar por local..." oninput="renderPatrimonio()">
+                    </div>
+
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Nº Patrimônio</th>
+                                    <th>Item / Equipamento</th>
+                                    <th>Nº Série</th>
+                                    <th>Local de Alocação</th>
+                                    <th>Valor</th>
+                                    <th>Comprovante/NF</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-patrimonio">
+                                <!-- Preenchido via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. VISÃO MEMBROS -->
+            <section id="view-membros" class="view-section">
+                <div class="card-box">
+                    <div class="card-header">
+                        <h3><i class="fa-solid fa-users"></i> Gestão de Membros e Visitantes</h3>
+                        <button class="btn btn-primary" onclick="openModalMembro()" style="width: auto;"><i class="fa-solid fa-user-plus"></i> Cadastrar Pessoa</button>
+                    </div>
+
+                    <div class="filter-bar">
+                        <input type="text" id="filter-mem-search" class="form-control" placeholder="Buscar por nome ou telefone..." oninput="renderMembros()">
+                        <select id="filter-mem-tipo" class="form-control" onchange="renderMembros()">
+                            <option value="">Todos os Status</option>
+                            <option value="Membro">Membro</option>
+                            <option value="Visitante">Visitante</option>
+                        </select>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Tipo</th>
+                                    <th>Telefone</th>
+                                    <th>Aniversário</th>
+                                    <th>Data Batismo</th>
+                                    <th>Endereço</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-membros">
+                                <!-- Preenchido dinamicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. VISÃO CÉLULAS -->
+            <section id="view-celulas" class="view-section">
+                <div class="card-box">
+                    <div class="card-header">
+                        <h3><i class="fa-solid fa-house-chimney-user"></i> Rede de Células / Pequenos Grupos</h3>
+                        <button class="btn btn-primary" onclick="openModalCelula()" style="width: auto;"><i class="fa-solid fa-plus"></i> Nova Célula</button>
+                    </div>
+
+                    <div class="filter-bar">
+                        <input type="text" id="filter-cel-search" class="form-control" placeholder="Buscar por nome da célula ou líder..." oninput="renderCelulas()">
+                    </div>
+
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Nome da Célula</th>
+                                    <th>Líder Responsável</th>
+                                    <th>Dia / Horário</th>
+                                    <th>Endereço</th>
+                                    <th>Qtd Membros</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-celulas">
+                                <!-- Preenchido dinamicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 6. VISÃO AGENDA & LEMBRETES -->
+            <section id="view-agenda" class="view-section">
+                <div class="card-box">
+                    <div class="card-header">
+                        <h3><i class="fa-solid fa-calendar-days"></i> Calendário e Lembretes Ministeriais</h3>
+                        <button class="btn btn-primary" onclick="openModalLembrete()" style="width: auto;"><i class="fa-solid fa-plus"></i> Novo Lembrete</button>
+                    </div>
+
+                    <div class="filter-bar">
+                        <input type="text" id="filter-lem-search" class="form-control" placeholder="Buscar lembretes..." oninput="renderLembretes()">
+                    </div>
+
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Data / Hora</th>
+                                    <th>Título do Evento / Lembrete</th>
+                                    <th>Descrição</th>
+                                    <th>Status</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-lembretes">
+                                <!-- Preenchido dinamicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 7. VISÃO CONFIGURAÇÕES -->
+            <section id="view-configuracoes" class="view-section">
+                <div class="metrics-grid">
+                    <div class="card-box">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-calendar-minus"></i> Virada do Mês (Zerar Mês)</h3>
+                        </div>
+                        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 20px;">
+                            A virada do mês zera totalmente os registros de Entradas e Saídas do mês corrente e gera um Histórico. <strong>O Saldo Atual em Caixa NUNCA é zerado.</strong>
+                        </p>
+                        <button class="btn btn-primary" onclick="executeMonthReset()" style="background: var(--accent); color: black;"><i class="fa-solid fa-rotate"></i> Executar Virada do Mês Agora</button>
+                    </div>
+
+                    <div class="card-box">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-user-shield"></i> Gerenciamento de Usuários</h3>
+                            <button class="btn btn-primary" onclick="openModalUser()" id="btn-add-user-modal" style="width: auto;"><i class="fa-solid fa-user-plus"></i> Criar Conta</button>
+                        </div>
+                        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 15px;">
+                            Apenas o Dono/ADM Geral (Brayan) possui privilégios para criar e excluir usuários.
+                        </p>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>Usuário</th>
+                                        <th>Cargo</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-users">
+                                    <!-- Preenchido via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-box" style="margin-top: 20px;">
+                    <div class="card-header">
+                        <h3><i class="fa-solid fa-clock-rotate-left"></i> Histórico de Fechamentos Mensais</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Mês / Ano Fechado</th>
+                                    <th>Entradas Acumuladas</th>
+                                    <th>Saídas Acumuladas</th>
+                                    <th>Saldo Sobrado no Mês</th>
+                                    <th>Data do Fechamento</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-history">
+                                <!-- Preenchido via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- MODAIS DO SISTEMA -->
+
+    <!-- Modal Transações (Entrada/Saída) -->
+    <div id="modal-transaction" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="modal-trans-title">Lançar Transação</h3>
+                <button class="close-modal" onclick="closeModal('modal-transaction')">&times;</button>
+            </div>
+            <form onsubmit="event.preventDefault(); saveTransaction();">
+                <input type="hidden" id="trans-id">
+                <input type="hidden" id="trans-tipo">
+                <div class="form-group">
+                    <label>Data</label>
+                    <input type="date" id="trans-data" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Categoria</label>
+                    <select id="trans-cat" class="form-control" required>
+                        <option value="Dízimo">Dízimo</option>
+                        <option value="Oferta">Oferta</option>
+                        <option value="Luz">Conta de Luz</option>
+                        <option value="Água">Conta de Água</option>
+                        <option value="Internet">Internet</option>
+                        <option value="Manutenção">Manutenção</option>
+                        <option value="Outros">Outros</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Descrição / Nome (Se Dízimo ou Saída)</label>
+                    <input type="text" id="trans-desc" class="form-control" placeholder="Ex: Oferta Culto de Domingo ou Dízimo de João" required>
+                </div>
+                <div class="form-group">
+                    <label>Valor (R$)</label>
+                    <input type="number" step="0.01" id="trans-valor" class="form-control" placeholder="0.00" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Salvar Lançamento</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Patrimônio -->
+    <div id="modal-patrimonio" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Cadastrar / Editar Patrimônio</h3>
+                <button class="close-modal" onclick="closeModal('modal-patrimonio')">&times;</button>
+            </div>
+            <form onsubmit="event.preventDefault(); savePatrimonio();">
+                <input type="hidden" id="pat-id">
+                <div class="form-group">
+                    <label>Nome do Equipamento / Item</label>
+                    <input type="text" id="pat-nome" class="form-control" placeholder="Ex: Caixa de Som JBL 500W" required>
+                </div>
+                <div class="form-group">
+                    <label>Número de Série</label>
+                    <input type="text" id="pat-serie" class="form-control" placeholder="Ex: SN-99887766" required>
+                </div>
+                <div class="form-group">
+                    <label>Local de Alocação</label>
+                    <input type="text" id="pat-local" class="form-control" placeholder="Ex: Púlpito Central, Sala de Mídia..." required>
+                </div>
+                <div class="form-group">
+                    <label>Valor Estimado / Compra (R$)</label>
+                    <input type="number" step="0.01" id="pat-valor" class="form-control" placeholder="0.00" required>
+                </div>
+                <div class="form-group">
+                    <label>Foto do Comprovante / Nota Fiscal (Simulação/Link)</label>
+                    <input type="text" id="pat-nf" class="form-control" placeholder="Registrada no Sistema (Anexo NF-e)">
+                </div>
+                <button type="submit" class="btn btn-primary">Salvar Equipamento</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Membro -->
+    <div id="modal-membro" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Ficha de Membro / Visitante</h3>
+                <button class="close-modal" onclick="closeModal('modal-membro')">&times;</button>
+            </div>
+            <form onsubmit="event.preventDefault(); saveMembro();">
+                <input type="hidden" id="mem-id">
+                <div class="form-group">
+                    <label>Nome Completo</label>
+                    <input type="text" id="mem-nome" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Tipo de Vínculo</label>
+                    <select id="mem-tipo" class="form-control" required>
+                        <option value="Membro">Membro</option>
+                        <option value="Visitante">Visitante</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Telefone / WhatsApp</label>
+                    <input type="text" id="mem-tel" class="form-control" placeholder="(00) 90000-0000">
+                </div>
+                <div class="form-group">
+                    <label>Data de Aniversário</label>
+                    <input type="date" id="mem-nasc" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Data de Batismo</label>
+                    <input type="date" id="mem-batismo" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Endereço Completo</label>
+                    <input type="text" id="mem-end" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary">Salvar Cadastro</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Célula -->
+    <div id="modal-celula" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Cadastrar / Editar Célula</h3>
+                <button class="close-modal" onclick="closeModal('modal-celula')">&times;</button>
+            </div>
+            <form onsubmit="event.preventDefault(); saveCelula();">
+                <input type="hidden" id="cel-id">
+                <div class="form-group">
+                    <label>Nome da Célula</label>
+                    <input type="text" id="cel-nome" class="form-control" placeholder="Ex: Célula Graça e Paz" required>
+                </div>
+                <div class="form-group">
+                    <label>Líder Responsável</label>
+                    <input type="text" id="cel-lider" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Dia e Horário</label>
+                    <input type="text" id="cel-dia" class="form-control" placeholder="Ex: Quarta-feira às 19:30" required>
+                </div>
+                <div class="form-group">
+                    <label>Endereço da Reunião</label>
+                    <input type="text" id="cel-end" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Quantidade de Membros</label>
+                    <input type="number" id="cel-qtd" class="form-control" placeholder="0" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Salvar Célula</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Lembrete -->
+    <div id="modal-lembrete" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Cadastrar Lembrete / Evento</h3>
+                <button class="close-modal" onclick="closeModal('modal-lembrete')">&times;</button>
+            </div>
+            <form onsubmit="event.preventDefault(); saveLembrete();">
+                <input type="hidden" id="lem-id">
+                <div class="form-group">
+                    <label>Data e Hora</label>
+                    <input type="datetime-local" id="lem-data" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Título do Evento</label>
+                    <input type="text" id="lem-titulo" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Descrição detalhada</label>
+                    <textarea id="lem-desc" class="form-control" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Salvar na Agenda</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Criar Usuário -->
+    <div id="modal-user" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Cadastrar Novo Usuário</h3>
+                <button class="close-modal" onclick="closeModal('modal-user')">&times;</button>
+            </div>
+            <form onsubmit="event.preventDefault(); saveUser();">
+                <div class="form-group">
+                    <label>Nome Completo</label>
+                    <input type="text" id="user-new-name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Login de Usuário</label>
+                    <input type="text" id="user-new-username" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Senha de Acesso</label>
+                    <input type="password" id="user-new-pass" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Cargo / Perfil de Acesso</label>
+                    <select id="user-new-role" class="form-control" required>
+                        <option value="Pastor">Pastor</option>
+                        <option value="Tesoureira">Tesoureira</option>
+                        <option value="Operador">Operador Geral</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Criar Acesso</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ÁREA DE IMPRESSÃO / PDF PROJEÇÃO -->
+    <div id="print-area">
+        <div class="print-header">
+            <h1>IGREJA GETSÊMANI</h1>
+            <h2>Relatório de Prestação de Contas & Transparência Financeira</h2>
+            <p>Gerado automaticamente via sistema brayan.sistemy</p>
+        </div>
+        <div class="print-summary">
+            <div>
+                <h3>Total Arrecadado no Mês:</h3>
+                <p id="print-total-entrada" style="font-size: 1.4rem; font-weight: bold; color: green;">R$ 0,00</p>
+            </div>
+            <div>
+                <h3>Total de Despesas no Mês:</h3>
+                <p id="print-total-saida" style="font-size: 1.4rem; font-weight: bold; color: red;">R$ 0,00</p>
+            </div>
+            <div>
+                <h3>Saldo Resultante:</h3>
+                <p id="print-total-saldo" style="font-size: 1.4rem; font-weight: bold; color: blue;">R$ 0,00</p>
+            </div>
+        </div>
+        <h3>Detalhamento das Operações:</h3>
+        <table style="width: 100%; border-collapse: collapse; margin-top: 15px;" border="1" cellpadding="8">
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Tipo</th>
+                    <th>Categoria</th>
+                    <th>Descrição</th>
+                    <th>Valor (R$)</th>
+                </tr>
+            </thead>
+            <tbody id="print-table-body">
+            </tbody>
+        </table>
+    </div>
+
+    <!-- JAVASCRIPT LÓGICA COMPLETA -->
+    <script>
+        // ESTADO GLOBAL DA APLICAÇÃO (INICIALMENTE COMPLETAMENTE ZERADO)
+        const DEFAULT_USERS = [
+            { id: 1, name: "Brayan Canuto", username: "bncanuto", pass: "Bc2010.com", role: "ADM Geral", avatar: null }
+        ];
+
+        let state = {
+            currentUser: null,
+            users: JSON.parse(localStorage.getItem('gets_users')) || DEFAULT_USERS,
+            saldoPermanente: parseFloat(localStorage.getItem('gets_saldo_perm')) || 0,
+            transactions: JSON.parse(localStorage.getItem('gets_trans')) || [],
+            patrimonio: JSON.parse(localStorage.getItem('gets_patrimonio')) || [],
+            membros: JSON.parse(localStorage.getItem('gets_membros')) || [],
+            celulas: JSON.parse(localStorage.getItem('gets_celulas')) || [],
+            lembretes: JSON.parse(localStorage.getItem('gets_lembretes')) || [],
+            history: JSON.parse(localStorage.getItem('gets_history')) || []
+        };
+
+        let financialChart = null;
+        let expensesPieChart = null;
+
+        // INICIALIZAÇÃO
+        document.addEventListener('DOMContentLoaded', () => {
+            startClock();
+            checkSession();
+        });
+
+        function saveData() {
+            localStorage.setItem('gets_users', JSON.stringify(state.users));
+            localStorage.setItem('gets_saldo_perm', state.saldoPermanente.toString());
+            localStorage.setItem('gets_trans', JSON.stringify(state.transactions));
+            localStorage.setItem('gets_patrimonio', JSON.stringify(state.patrimonio));
+            localStorage.setItem('gets_membros', JSON.stringify(state.membros));
+            localStorage.setItem('gets_celulas', JSON.stringify(state.celulas));
+            localStorage.setItem('gets_lembretes', JSON.stringify(state.lembretes));
+            localStorage.setItem('gets_history', JSON.stringify(state.history));
+            updateDashboard();
+        }
+
+        // RELÓGIO EM TEMPO REAL
+        function startClock() {
+            function update() {
+                const now = new Date();
+                document.getElementById('time').innerText = now.toLocaleTimeString('pt-BR');
+                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                document.getElementById('date').innerText = now.toLocaleDateString('pt-BR', options);
+            }
+            update();
+            setInterval(update, 1000);
+        }
+
+        // AUTENTICAÇÃO DE LOGIN
+        function handleLogin() {
+            const u = document.getElementById('login-user').value.trim();
+            const p = document.getElementById('login-pass').value.trim();
+
+            const found = state.users.find(user => user.username === u && user.pass === p);
+            if (found) {
+                state.currentUser = found;
+                sessionStorage.setItem('gets_session', JSON.stringify(found));
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('app-container').style.display = 'flex';
+                setupUserUI();
+                renderAllViews();
+            } else {
+                alert('Usuário ou senha incorretos!');
+            }
+        }
+
+        function checkSession() {
+            const sess = sessionStorage.getItem('gets_session');
+            if (sess) {
+                state.currentUser = JSON.parse(sess);
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('app-container').style.display = 'flex';
+                setupUserUI();
+                renderAllViews();
+            }
+        }
+
+        function handleLogout() {
+            sessionStorage.removeItem('gets_session');
+            location.reload();
+        }
+
+        function setupUserUI() {
+            document.getElementById('user-display-name').innerText = state.currentUser.name;
+            document.getElementById('user-display-role').innerText = state.currentUser.role;
+            if (state.currentUser.avatar) {
+                document.getElementById('user-avatar').src = state.currentUser.avatar;
+            }
+        }
+
+        // UPLOAD FOTO DE PERFIL
+        function triggerProfileUpload() {
+            document.getElementById('profile-upload-input').click();
+        }
+
+        function handleProfilePictureUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imgData = e.target.result;
+                    document.getElementById('user-avatar').src = imgData;
+                    state.currentUser.avatar = imgData;
+                    const index = state.users.findIndex(u => u.id === state.currentUser.id);
+                    if (index !== -1) {
+                        state.users[index].avatar = imgData;
+                        saveData();
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // NAVEGAÇÃO ENTRE JANELAS
+        function switchView(viewId) {
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+
+            document.getElementById(`view-${viewId}`).classList.add('active');
+            event.currentTarget.classList.add('active');
+
+            const titles = {
+                dashboard: "Painel Geral",
+                financas: "Gestão Financeira Contábil",
+                patrimonio: "Controle de Patrimônio e Estoque",
+                membros: "Membros e Visitantes",
+                celulas: "Rede de Células",
+                agenda: "Agenda Ministerial",
+                configuracoes: "Configurações do Sistema"
+            };
+            document.getElementById('page-title').innerText = titles[viewId] || "Painel";
+        }
+
+        // RENDERIZAÇÃO DE TODAS AS TABELAS E GRÁFICOS
+        function renderAllViews() {
+            updateDashboard();
+            renderTransactions();
+            renderPatrimonio();
+            renderMembros();
+            renderCelulas();
+            renderLembretes();
+            renderUsers();
+            renderHistory();
+        }
+
+        // DASHBOARD E CÁLCULOS
+        function updateDashboard() {
+            let totalEntradas = 0;
+            let totalSaidas = 0;
+
+            state.transactions.forEach(t => {
+                if (t.tipo === 'entrada') totalEntradas += parseFloat(t.valor);
+                if (t.tipo === 'saida') totalSaidas += parseFloat(t.valor);
+            });
+
+            const saldoMes = totalEntradas - totalSaidas;
+            const saldoTotalAtual = state.saldoPermanente + saldoMes;
+
+            let totalPatrimonio = 0;
+            state.patrimonio.forEach(p => totalPatrimonio += parseFloat(p.valor));
+
+            document.getElementById('dash-saldo').innerText = `R$ ${saldoTotalAtual.toFixed(2)}`;
+            document.getElementById('dash-entradas').innerText = `R$ ${totalEntradas.toFixed(2)}`;
+            document.getElementById('dash-saidas').innerText = `R$ ${totalSaidas.toFixed(2)}`;
+            document.getElementById('dash-patrimonio').innerText = `R$ ${totalPatrimonio.toFixed(2)}`;
+
+            document.getElementById('transparency-summary').innerHTML = `
+                Neste mês, a Igreja GETSÊMANI arrecadou <strong>R$ ${totalEntradas.toFixed(2)}</strong>, registrou <strong>R$ ${totalSaidas.toFixed(2)}</strong> em saídas operacionais, obtendo o balanço mensal de <strong>R$ ${saldoMes.toFixed(2)}</strong>. O Saldo Total em Caixa acumulado é de <strong>R$ ${saldoTotalAtual.toFixed(2)}</strong>.
+            `;
+
+            renderCharts(totalEntradas, totalSaidas);
+        }
+
+        function renderCharts(entradas, saidas) {
+            const ctx1 = document.getElementById('financialChart').getContext('2d');
+            if (financialChart) financialChart.destroy();
+            financialChart = new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                    labels: ['Entradas', 'Saídas'],
+                    datasets: [{
+                        label: 'Valor (R$)',
+                        data: [entradas, saidas],
+                        backgroundColor: ['rgba(16, 185, 129, 0.7)', 'rgba(239, 68, 68, 0.7)'],
+                        borderColor: ['#10b981', '#ef4444'],
+                        borderWidth: 2
+                    }]
+                },
+                options: { responsive: true, plugins: { legend: { display: false } } }
+            });
+
+            const categories = {};
+            state.transactions.filter(t => t.tipo === 'saida').forEach(t => {
+                categories[t.categoria] = (categories[t.categoria] || 0) + parseFloat(t.valor);
+            });
+
+            const ctx2 = document.getElementById('expensesPieChart').getContext('2d');
+            if (expensesPieChart) expensesPieChart.destroy();
+            expensesPieChart = new Chart(ctx2, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(categories).length ? Object.keys(categories) : ['Sem Despesas'],
+                    datasets: [{
+                        data: Object.values(categories).length ? Object.values(categories) : [1],
+                        backgroundColor: ['#f59e0b', '#ef4444', '#2563eb', '#10b981', '#8b5cf6']
+                    }]
+                },
+                options: { responsive: true }
+            });
+        }
+
+        // CONTROLADORES DE MODAIS
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+
+        // TRANSAÇÕES (FINANCEIRO)
+        function openModalTransaction(tipo) {
+            document.getElementById('trans-id').value = '';
+            document.getElementById('trans-tipo').value = tipo;
+            document.getElementById('trans-data').value = new Date().toISOString().split('T')[0];
+            document.getElementById('trans-desc').value = '';
+            document.getElementById('trans-valor').value = '';
+            document.getElementById('modal-trans-title').innerText = tipo === 'entrada' ? 'Nova Entrada (Receita)' : 'Nova Saída (Despesa)';
+            document.getElementById('modal-transaction').style.display = 'flex';
+        }
+
+        function saveTransaction() {
+            const id = document.getElementById('trans-id').value;
+            const tipo = document.getElementById('trans-tipo').value;
+            const data = document.getElementById('trans-data').value;
+            const categoria = document.getElementById('trans-cat').value;
+            const desc = document.getElementById('trans-desc').value;
+            const valor = parseFloat(document.getElementById('trans-valor').value);
+
+            if (id) {
+                const index = state.transactions.findIndex(t => t.id == id);
+                state.transactions[index] = { id: parseInt(id), tipo, data, categoria, desc, valor };
+            } else {
+                state.transactions.push({ id: Date.now(), tipo, data, categoria, desc, valor });
+            }
+
+            if (tipo === 'saida' && valor >= 100) {
+                if (confirm('Deseja vincular/cadastrar esta despesa ao Patrimônio da Igreja?')) {
+                    openModalPatrimonio(desc, valor);
+                }
+            }
+
+            saveData();
+            renderTransactions();
+            closeModal('modal-transaction');
+        }
+
+        function editTransaction(id) {
+            const t = state.transactions.find(x => x.id == id);
+            if (t) {
+                document.getElementById('trans-id').value = t.id;
+                document.getElementById('trans-tipo').value = t.tipo;
+                document.getElementById('trans-data').value = t.data;
+                document.getElementById('trans-cat').value = t.categoria;
+                document.getElementById('trans-desc').value = t.desc;
+                document.getElementById('trans-valor').value = t.valor;
+                document.getElementById('modal-transaction').style.display = 'flex';
+            }
+        }
+
+        function deleteTransaction(id) {
+            if (confirm('Tem certeza que deseja excluir este lançamento financeiro?')) {
+                state.transactions = state.transactions.filter(t => t.id != id);
+                saveData();
+                renderTransactions();
+            }
+        }
+
+        function renderTransactions() {
+            const tbody = document.getElementById('table-transactions');
+            tbody.innerHTML = '';
+
+            const descFilter = document.getElementById('filter-fin-desc').value.toLowerCase();
+            const tipoFilter = document.getElementById('filter-fin-tipo').value;
+            const catFilter = document.getElementById('filter-fin-cat').value;
+
+            const canSeeDizimo = ['ADM Geral', 'Pastor', 'Tesoureira'].includes(state.currentUser.role);
+
+            const filtered = state.transactions.filter(t => {
+                const matchDesc = t.desc.toLowerCase().includes(descFilter);
+                const matchTipo = tipoFilter ? t.tipo === tipoFilter : true;
+                const matchCat = catFilter ? t.categoria === catFilter : true;
+                return matchDesc && matchTipo && matchCat;
+            });
+
+            filtered.forEach(t => {
+                let displayDesc = t.desc;
+                if (t.categoria === 'Dízimo' && !canSeeDizimo) {
+                    displayDesc = 'Dizimista [Sigilo Concedido]';
+                }
+                if (t.categoria === 'Oferta') {
+                    displayDesc = 'Ofertante Anônimo';
+                }
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${t.data}</td>
+                    <td><span class="metric-badge ${t.tipo === 'entrada' ? 'badge-success' : 'badge-danger'}">${t.tipo.toUpperCase()}</span></td>
+                    <td>${t.categoria}</td>
+                    <td>${displayDesc}</td>
+                    <td style="font-weight: bold; color: ${t.tipo === 'entrada' ? '#10b981' : '#ef4444'};">R$ ${t.valor.toFixed(2)}</td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="btn-icon btn-edit" onclick="editTransaction(${t.id})"><i class="fa-solid fa-pen"></i></button>
+                            <button class="btn-icon btn-delete" onclick="deleteTransaction(${t.id})"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // PATRIMÔNIO E ESTOQUE
+        function openModalPatrimonio(nomePreset = '', valorPreset = '') {
+            document.getElementById('pat-id').value = '';
+            document.getElementById('pat-nome').value = nomePreset;
+            document.getElementById('pat-serie').value = '';
+            document.getElementById('pat-local').value = '';
+            document.getElementById('pat-valor').value = valorPreset;
+            document.getElementById('pat-nf').value = 'Comprovante em anexo no sistema';
+            document.getElementById('modal-patrimonio').style.display = 'flex';
+        }
+
+        function savePatrimonio() {
+            const id = document.getElementById('pat-id').value;
+            const nome = document.getElementById('pat-nome').value;
+            const serie = document.getElementById('pat-serie').value;
+            const local = document.getElementById('pat-local').value;
+            const valor = parseFloat(document.getElementById('pat-valor').value);
+            const nf = document.getElementById('pat-nf').value;
+
+            if (id) {
+                const idx = state.patrimonio.findIndex(p => p.id == id);
+                state.patrimonio[idx] = { id: parseInt(id), numPat: state.patrimonio[idx].numPat, nome, serie, local, valor, nf };
+            } else {
+                const numPat = `PAT-${Math.floor(1000 + Math.random() * 9000)}`;
+                state.patrimonio.push({ id: Date.now(), numPat, nome, serie, local, valor, nf });
+            }
+
+            saveData();
+            renderPatrimonio();
+            closeModal('modal-patrimonio');
+        }
+
+        function editPatrimonio(id) {
+            const p = state.patrimonio.find(x => x.id == id);
+            if (p) {
+                document.getElementById('pat-id').value = p.id;
+                document.getElementById('pat-nome').value = p.nome;
+                document.getElementById('pat-serie').value = p.serie;
+                document.getElementById('pat-local').value = p.local;
+                document.getElementById('pat-valor').value = p.valor;
+                document.getElementById('pat-nf').value = p.nf;
+                document.getElementById('modal-patrimonio').style.display = 'flex';
+            }
+        }
+
+        function deletePatrimonio(id) {
+            if (confirm('Deseja dar baixa/excluir este patrimônio?')) {
+                state.patrimonio = state.patrimonio.filter(p => p.id != id);
+                saveData();
+                renderPatrimonio();
+            }
+        }
+
+        function renderPatrimonio() {
+            const tbody = document.getElementById('table-patrimonio');
+            tbody.innerHTML = '';
+
+            const search = document.getElementById('filter-pat-search').value.toLowerCase();
+            const localFilter = document.getElementById('filter-pat-local').value.toLowerCase();
+
+            const filtered = state.patrimonio.filter(p => {
+                const matchSearch = p.nome.toLowerCase().includes(search) || p.serie.toLowerCase().includes(search);
+                const matchLocal = p.local.toLowerCase().includes(localFilter);
+                return matchSearch && matchLocal;
+            });
+
+            filtered.forEach(p => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${p.numPat}</strong></td>
+                    <td>${p.nome}</td>
+                    <td>${p.serie}</td>
+                    <td>${p.local}</td>
+                    <td>R$ ${p.valor.toFixed(2)}</td>
+                    <td><i class="fa-solid fa-file-image" style="color: var(--primary);"></i> ${p.nf}</td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="btn-icon btn-edit" onclick="editPatrimonio(${p.id})"><i class="fa-solid fa-pen"></i></button>
+                            <button class="btn-icon btn-delete" onclick="deletePatrimonio(${p.id})"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // MEMBROS
+        function openModalMembro() {
+            document.getElementById('mem-id').value = '';
+            document.getElementById('mem-nome').value = '';
+            document.getElementById('mem-tipo').value = 'Membro';
+            document.getElementById('mem-tel').value = '';
+            document.getElementById('mem-nasc').value = '';
+            document.getElementById('mem-batismo').value = '';
+            document.getElementById('mem-end').value = '';
+            document.getElementById('modal-membro').style.display = 'flex';
+        }
+
+        function saveMembro() {
+            const id = document.getElementById('mem-id').value;
+            const nome = document.getElementById('mem-nome').value;
+            const tipo = document.getElementById('mem-tipo').value;
+            const tel = document.getElementById('mem-tel').value;
+            const nasc = document.getElementById('mem-nasc').value;
+            const batismo = document.getElementById('mem-batismo').value;
+            const end = document.getElementById('mem-end').value;
+
+            if (id) {
+                const idx = state.membros.findIndex(m => m.id == id);
+                state.membros[idx] = { id: parseInt(id), nome, tipo, tel, nasc, batismo, end };
+            } else {
+                state.membros.push({ id: Date.now(), nome, tipo, tel, nasc, batismo, end });
+            }
+
+            saveData();
+            renderMembros();
+            closeModal('modal-membro');
+        }
+
+        function editMembro(id) {
+            const m = state.membros.find(x => x.id == id);
+            if (m) {
+                document.getElementById('mem-id').value = m.id;
+                document.getElementById('mem-nome').value = m.nome;
+                document.getElementById('mem-tipo').value = m.tipo;
+                document.getElementById('mem-tel').value = m.tel;
+                document.getElementById('mem-nasc').value = m.nasc;
+                document.getElementById('mem-batismo').value = m.batismo;
+                document.getElementById('mem-end').value = m.end;
+                document.getElementById('modal-membro').style.display = 'flex';
+            }
+        }
+
+        function deleteMembro(id) {
+            if (confirm('Tem certeza que deseja excluir o cadastro dessa pessoa?')) {
+                state.membros = state.membros.filter(m => m.id != id);
+                saveData();
+                renderMembros();
+            }
+        }
+
+        function renderMembros() {
+            const tbody = document.getElementById('table-membros');
+            tbody.innerHTML = '';
+
+            const search = document.getElementById('filter-mem-search').value.toLowerCase();
+            const tipoFilter = document.getElementById('filter-mem-tipo').value;
+
+            const filtered = state.membros.filter(m => {
+                const matchSearch = m.nome.toLowerCase().includes(search) || m.tel.includes(search);
+                const matchTipo = tipoFilter ? m.tipo === tipoFilter : true;
+                return matchSearch && matchTipo;
+            });
+
+            filtered.forEach(m => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${m.nome}</strong></td>
+                    <td><span class="metric-badge ${m.tipo === 'Membro' ? 'badge-success' : 'badge-danger'}">${m.tipo}</span></td>
+                    <td>${m.tel}</td>
+                    <td>${m.nasc || '-'}</td>
+                    <td>${m.batismo || '-'}</td>
+                    <td>${m.end}</td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="btn-icon btn-edit" onclick="editMembro(${m.id})"><i class="fa-solid fa-pen"></i></button>
+                            <button class="btn-icon btn-delete" onclick="deleteMembro(${m.id})"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // CÉLULAS
+        function openModalCelula() {
+            document.getElementById('cel-id').value = '';
+            document.getElementById('cel-nome').value = '';
+            document.getElementById('cel-lider').value = '';
+            document.getElementById('cel-dia').value = '';
+            document.getElementById('cel-end').value = '';
+            document.getElementById('cel-qtd').value = '';
+            document.getElementById('modal-celula').style.display = 'flex';
+        }
+
+        function saveCelula() {
+            const id = document.getElementById('cel-id').value;
+            const nome = document.getElementById('cel-nome').value;
+            const lider = document.getElementById('cel-lider').value;
+            const dia = document.getElementById('cel-dia').value;
+            const end = document.getElementById('cel-end').value;
+            const qtd = parseInt(document.getElementById('cel-qtd').value);
+
+            if (id) {
+                const idx = state.celulas.findIndex(c => c.id == id);
+                state.celulas[idx] = { id: parseInt(id), nome, lider, dia, end, qtd };
+            } else {
+                state.celulas.push({ id: Date.now(), nome, lider, dia, end, qtd });
+            }
+
+            saveData();
+            renderCelulas();
+            closeModal('modal-celula');
+        }
+
+        function editCelula(id) {
+            const c = state.celulas.find(x => x.id == id);
+            if (c) {
+                document.getElementById('cel-id').value = c.id;
+                document.getElementById('cel-nome').value = c.nome;
+                document.getElementById('cel-lider').value = c.lider;
+                document.getElementById('cel-dia').value = c.dia;
+                document.getElementById('cel-end').value = c.end;
+                document.getElementById('cel-qtd').value = c.qtd;
+                document.getElementById('modal-celula').style.display = 'flex';
+            }
+        }
+
+        function deleteCelula(id) {
+            if (confirm('Deseja excluir esta célula?')) {
+                state.celulas = state.celulas.filter(c => c.id != id);
+                saveData();
+                renderCelulas();
+            }
+        }
+
+        function renderCelulas() {
+            const tbody = document.getElementById('table-celulas');
+            tbody.innerHTML = '';
+
+            const search = document.getElementById('filter-cel-search').value.toLowerCase();
+
+            const filtered = state.celulas.filter(c => c.nome.toLowerCase().includes(search) || c.lider.toLowerCase().includes(search));
+
+            filtered.forEach(c => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${c.nome}</strong></td>
+                    <td>${c.lider}</td>
+                    <td>${c.dia}</td>
+                    <td>${c.end}</td>
+                    <td><span class="metric-badge badge-success">${c.qtd} Membros</span></td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="btn-icon btn-edit" onclick="editCelula(${c.id})"><i class="fa-solid fa-pen"></i></button>
+                            <button class="btn-icon btn-delete" onclick="deleteCelula(${c.id})"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // AGENDA E LEMBRETES
+        function openModalLembrete() {
+            document.getElementById('lem-id').value = '';
+            document.getElementById('lem-data').value = '';
+            document.getElementById('lem-titulo').value = '';
+            document.getElementById('lem-desc').value = '';
+            document.getElementById('modal-lembrete').style.display = 'flex';
+        }
+
+        function saveLembrete() {
+            const id = document.getElementById('lem-id').value;
+            const data = document.getElementById('lem-data').value;
+            const titulo = document.getElementById('lem-titulo').value;
+            const desc = document.getElementById('lem-desc').value;
+
+            if (id) {
+                const idx = state.lembretes.findIndex(l => l.id == id);
+                state.lembretes[idx] = { id: parseInt(id), data, titulo, desc, status: state.lembretes[idx].status };
+            } else {
+                state.lembretes.push({ id: Date.now(), data, titulo, desc, status: 'Pendente' });
+            }
+
+            saveData();
+            renderLembretes();
+            closeModal('modal-lembrete');
+        }
+
+        function deleteLembrete(id) {
+            if (confirm('Deseja excluir este lembrete?')) {
+                state.lembretes = state.lembretes.filter(l => l.id != id);
+                saveData();
+                renderLembretes();
+            }
+        }
+
+        function renderLembretes() {
+            const tbody = document.getElementById('table-lembretes');
+            tbody.innerHTML = '';
+
+            const search = document.getElementById('filter-lem-search').value.toLowerCase();
+            const filtered = state.lembretes.filter(l => l.titulo.toLowerCase().includes(search));
+
+            filtered.forEach(l => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${l.data.replace('T', ' ')}</td>
+                    <td><strong>${l.titulo}</strong></td>
+                    <td>${l.desc}</td>
+                    <td><span class="metric-badge badge-success">${l.status}</span></td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="btn-icon btn-delete" onclick="deleteLembrete(${l.id})"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // CONFIGURAÇÕES & USUÁRIOS
+        function openModalUser() {
+            if (state.currentUser.role !== 'ADM Geral') {
+                alert('Apenas o Administrador Geral (Brayan) pode cadastrar novos usuários!');
+                return;
+            }
+            document.getElementById('user-new-name').value = '';
+            document.getElementById('user-new-username').value = '';
+            document.getElementById('user-new-pass').value = '';
+            document.getElementById('modal-user').style.display = 'flex';
+        }
+
+        function saveUser() {
+            const name = document.getElementById('user-new-name').value;
+            const username = document.getElementById('user-new-username').value;
+            const pass = document.getElementById('user-new-pass').value;
+            const role = document.getElementById('user-new-role').value;
+
+            state.users.push({ id: Date.now(), name, username, pass, role, avatar: null });
+            saveData();
+            renderUsers();
+            closeModal('modal-user');
+        }
+
+        function deleteUser(id) {
+            if (state.currentUser.role !== 'ADM Geral') {
+                alert('Apenas o Administrador Geral (Brayan) pode apagar usuários!');
+                return;
+            }
+            const u = state.users.find(x => x.id == id);
+            if (u && u.username === 'bncanuto') {
+                alert('O usuário principal Dono/ADM Geral não pode ser excluído!');
+                return;
+            }
+
+            if (confirm('Tem certeza que deseja apagar o acesso deste usuário?')) {
+                state.users = state.users.filter(u => u.id != id);
+                saveData();
+                renderUsers();
+            }
+        }
+
+        function renderUsers() {
+            const tbody = document.getElementById('table-users');
+            tbody.innerHTML = '';
+
+            state.users.forEach(u => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${u.name}</td>
+                    <td><strong>${u.username}</strong></td>
+                    <td><span class="metric-badge badge-success">${u.role}</span></td>
+                    <td>
+                        ${u.username !== 'bncanuto' ? `
+                            <button class="btn-icon btn-delete" onclick="deleteUser(${u.id})"><i class="fa-solid fa-trash"></i></button>
+                        ` : '<span style="font-size:0.75rem; color: var(--accent);">DONO / ADM</span>'}
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // VIRADA DO MÊS (ZERAR FLUXO)
+        function executeMonthReset() {
+            if (confirm('ATENÇÃO: A virada do mês irá zerar as Entradas e Saídas acumuladas do mês atual para iniciar o próximo ciclo. O Saldo Atual em Caixa SERÁ PRESERVADO E NUNCA ZERA. Confirmar?')) {
+                let totalEntradas = 0;
+                let totalSaidas = 0;
+
+                state.transactions.forEach(t => {
+                    if (t.tipo === 'entrada') totalEntradas += parseFloat(t.valor);
+                    if (t.tipo === 'saida') totalSaidas += parseFloat(t.valor);
+                });
+
+                const sobrado = totalEntradas - totalSaidas;
+
+                state.saldoPermanente += sobrado;
+
+                const dateNow = new Date();
+                const period = `${dateNow.getMonth() + 1}/${dateNow.getFullYear()}`;
+
+                state.history.push({
+                    periodo: period,
+                    entradas: totalEntradas,
+                    saidas: totalSaidas,
+                    sobrado: sobrado,
+                    dataFechamento: dateNow.toLocaleDateString('pt-BR')
+                });
+
+                state.transactions = [];
+
+                saveData();
+                renderAllViews();
+                alert('Virada do Mês executada com sucesso! Lançamentos zerados e saldo acumulado no Caixa permanente.');
+            }
+        }
+
+        function renderHistory() {
+            const tbody = document.getElementById('table-history');
+            tbody.innerHTML = '';
+
+            state.history.forEach(h => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${h.periodo}</strong></td>
+                    <td style="color: green;">R$ ${h.entradas.toFixed(2)}</td>
+                    <td style="color: red;">R$ ${h.saidas.toFixed(2)}</td>
+                    <td style="font-weight: bold;">R$ ${h.sobrado.toFixed(2)}</td>
+                    <td>${h.dataFechamento}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // EMISSÃO DE PDF / PROJEÇÃO VISUAL
+        function generatePDFReport() {
+            let totalEntradas = 0;
+            let totalSaidas = 0;
+            const printBody = document.getElementById('print-table-body');
+            printBody.innerHTML = '';
+
+            state.transactions.forEach(t => {
+                if (t.tipo === 'entrada') totalEntradas += parseFloat(t.valor);
+                if (t.tipo === 'saida') totalSaidas += parseFloat(t.valor);
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${t.data}</td>
+                    <td>${t.tipo.toUpperCase()}</td>
+                    <td>${t.categoria}</td>
+                    <td>${t.desc}</td>
+                    <td>R$ ${t.valor.toFixed(2)}</td>
+                `;
+                printBody.appendChild(tr);
+            });
+
+            document.getElementById('print-total-entrada').innerText = `R$ ${totalEntradas.toFixed(2)}`;
+            document.getElementById('print-total-saida').innerText = `R$ ${totalSaidas.toFixed(2)}`;
+            document.getElementById('print-total-saldo').innerText = `R$ ${(totalEntradas - totalSaidas).toFixed(2)}`;
+
+            window.print();
+        }
+    </script>
+</body>
+</html>
