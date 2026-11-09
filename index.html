@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Getsemani do morro de Satana - Igreja BATISTA</title>
+    <title>Sistema Contábil e Administrativo - Igreja GETSÊMANI</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -132,10 +132,10 @@
 </head>
 <body class="min-h-screen flex flex-col justify-between relative overflow-x-hidden">
 
-    <!-- Watermark Brayan System -->
+    <!-- Watermark Brayan Systemy -->
     <div class="watermark-bg">
         <i class="fa-solid fa-shield-halved text-amber-400 opacity-60"></i>
-        <span>brayan.system</span>
+        <span>brayan.sistemy</span>
     </div>
 
     <!-- APP CONTAINER -->
@@ -155,8 +155,8 @@
                     </div>
                 </div>
 
-                <h1 class="text-2xl font-black text-white tracking-wide">IGREJA BATISTA</h1>
-                <p class="text-xs text-slate-400 mt-1 uppercase tracking-widest font-semibold">Getsemani do morro de Santana</p>
+                <h1 class="text-2xl font-black text-white tracking-wide">IGREJA GETSÊMANI</h1>
+                <p class="text-xs text-slate-400 mt-1 uppercase tracking-widest font-semibold">Sistema Contábil & Administrativo</p>
 
                 <form id="loginForm" class="mt-6 space-y-4 text-left" onsubmit="handleLogin(event)">
                     <div>
@@ -186,7 +186,7 @@
                 </form>
 
                 <div class="mt-6 pt-4 border-t border-slate-800 text-center">
-                    <p class="text-[11px] text-slate-500">Desenvolvido sob medida por <span class="text-amber-400 font-bold">brayan.system</span></p>
+                    <p class="text-[11px] text-slate-500">Desenvolvido sob medida por <span class="text-amber-400 font-bold">brayan.sistemy</span></p>
                 </div>
             </div>
         </div>
@@ -235,7 +235,7 @@
                         </div>
                         <div class="text-left">
                             <p id="userNameDisplay" class="text-xs font-bold text-white">Brayan (ADM)</p>
-                            <p id="userRoleDisplay" class="text-[10px] text-slate-400">ADM Geral</p>
+                            <p id="userRoleDisplay" class="text-[10px] text-slate-400">Dono e ADM Geral</p>
                         </div>
                     </div>
 
@@ -500,7 +500,7 @@
 
                     <div class="pt-6 border-t border-slate-800 text-center text-xs text-slate-500 flex justify-between items-center">
                         <span>Aprovado pela Tesouraria e ADM Geral</span>
-                        <span class="font-bold text-slate-400">brayan.system</span>
+                        <span class="font-bold text-slate-400">brayan.sistemy</span>
                     </div>
                 </div>
             </section>
@@ -747,7 +747,7 @@
         <!-- FOOTER BRANDING -->
         <footer id="mainFooter" class="hidden no-print mt-12 py-4 text-center border-t border-slate-900">
             <p class="text-xs text-slate-500">
-                Igreja GETSÊMANI &copy; Sistema Oficial de Gestão Financeira e Administrativa - Marca Registrada <span class="text-amber-400 font-bold">brayan.system</span>
+                Igreja GETSÊMANI &copy; Sistema Oficial de Gestão Financeira e Administrativa - Marca Registrada <span class="text-amber-400 font-bold">brayan.sistemy</span>
             </p>
         </footer>
     </div>
@@ -952,10 +952,11 @@
                     <div>
                         <label class="block text-xs text-slate-300 mb-1">Dia de Reunião</label>
                         <select id="cellDay" class="w-full p-2.5 rounded-xl glass-input text-xs">
-                            <option value="Terça-feira">Terça-feira</option>
                             <option value="Quarta-feira">Quarta-feira</option>
+                            <option value="Quinta-feira">Quinta-feira</option>
                             <option value="Sexta-feira">Sexta-feira</option>
                             <option value="Sábado">Sábado</option>
+                            <option value="Domingo">Domingo</option>
                         </select>
                     </div>
                     <div>
@@ -1058,51 +1059,37 @@
     <!-- ==================== LOGICA JAVASCRIPT COMPLETA ==================== -->
     <script>
         // -------------------------------------------------------------
-        // ESTADO GLOBAL & PERSISTÊNCIA EM LOCALSTORAGE
+        // ESTADO GLOBAL & PERSISTÊNCIA EM LOCALSTORAGE (100% ZERADO)
         // -------------------------------------------------------------
         
-        // Dados de inicialização limpos
+        // Estado inicial zerado de fábrica
         const defaultState = {
             activeUser: null,
             users: [
-                { id: '1', username: 'bncanuto', pass: 'Bc2010.com', name: 'Brayan', role: 'Dono e ADM Geral', photo: 'https://placehold.co/100x100/1e293b/fbbf24?text=Brayan' },
-                { id: '2', username: 'pastormarcos', pass: '123456', name: 'Pr. Marcos', role: 'Pastor', photo: 'https://placehold.co/100x100/1e293b/3b82f6?text=Marcos' },
-                { id: '3', username: 'tesouraria1', pass: '123456', name: 'Ana Souza', role: 'Tesoureira', photo: 'https://placehold.co/100x100/1e293b/10b981?text=Ana' }
+                { id: '1', username: 'bncanuto', pass: 'Bc2010.com', name: 'Brayan', role: 'Dono e ADM Geral', photo: 'https://placehold.co/100x100/1e293b/fbbf24?text=Brayan' }
             ],
-            // Saldo total acumulado em caixa que NUNCA zera
-            totalCashBalance: 15450.00,
-            transactions: [
-                { id: 't1', date: '2026-11-01', type: 'ENTRADA', category: 'Dízimo', description: 'Dízimo Fiel', person: 'Carlos Alberto', amount: 800.00 },
-                { id: 't2', date: '2026-11-02', type: 'ENTRADA', category: 'Oferta', description: 'Oferta Culto Domingo', person: 'Oferta Anônima', amount: 450.00 },
-                { id: 't3', date: '2026-11-03', type: 'SAIDA', category: 'Conta de Luz', description: 'ENEL Distribuição Templo', person: 'ENEL', amount: 620.00 },
-                { id: 't4', date: '2026-11-04', type: 'SAIDA', category: 'Internet', description: 'Fibra Óptica 500MB', person: 'Provedor Web', amount: 120.00 }
-            ],
-            inventory: [
-                { id: 'i1', tag: 'PAT-001', serial: 'SN-998124', name: 'Mesa de Som Behringer 24 Ch', location: 'Cabine de Mídia', value: 3500.00, invoice: '' },
-                { id: 'i2', tag: 'PAT-002', serial: 'SN-772109', name: 'Caixa de Som Amplificada 500W', location: 'Templo Principal', value: 2200.00, invoice: '' }
-            ],
-            members: [
-                { id: 'm1', type: 'Membro', name: 'Carlos Alberto Silva', phone: '(22) 99988-7766', birth: '1988-05-14', baptism: '2015-08-20', address: 'Rua das Flores, 120' },
-                { id: 'm2', type: 'Visitante', name: 'Mariana Costa', phone: '(22) 98811-2233', birth: '1995-11-02', baptism: '', address: 'Av. Central, 450' }
-            ],
-            cells: [
-                { id: 'c1', name: 'Célula Getsêmani Central', leader: 'Diácono Roberto', day: 'Quinta-feira', count: 14, address: 'Rua Principal, 300' },
-                { id: 'c2', name: 'Célula Morada da Fé', leader: 'Ir. Lucia', day: 'Sábado', count: 9, address: 'Bairro Alto, 88' }
-            ],
-            calendar: [
-                { id: 'k1', title: 'Culto de Ceia e Gratidão', date: '2026-11-15', time: '19:00', notes: 'Preparar elementos da ceia' }
-            ],
-            history: [
-                { month: 'Outubro / 2026', totalIn: 8400.00, totalOut: 4200.00, net: 4200.00 }
-            ]
+            // Saldo total acumulado em caixa zerado
+            totalCashBalance: 0.00,
+            transactions: [],
+            inventory: [],
+            members: [],
+            cells: [],
+            calendar: [],
+            history: []
         };
 
-        // Carregar do localStorage ou usar padrão
+        // Carregar do localStorage ou usar o padrão zerado
         function loadDB() {
             const data = localStorage.getItem('getsamani_db_v1');
             if (!data) return defaultState;
             try {
-                return JSON.parse(data);
+                const parsed = JSON.parse(data);
+                // Garantir que a estrutura exista caso seja um banco antigo
+                return {
+                    ...defaultState,
+                    ...parsed,
+                    users: (parsed.users && parsed.users.length > 0) ? parsed.users : defaultState.users
+                };
             } catch (e) {
                 return defaultState;
             }
@@ -1950,7 +1937,7 @@
             const tbody = document.getElementById('usersTableBody');
             tbody.innerHTML = '';
 
-            const isAdm = db.activeUser.username === 'bncanuto' || db.activeUser.role === 'ADM Geral';
+            const isAdm = db.activeUser.username === 'bncanuto' || db.activeUser.role === 'Dono e ADM Geral';
 
             db.users.forEach(u => {
                 const tr = document.createElement('tr');
