@@ -1307,27 +1307,23 @@
     </div>
 
     <script>
-        // =========================================================================
-        // 1. COLE AQUI AS CREDENCIAIS DO SEU PROJETO FIREBASE PARA SINCRONIZAR TUDO
-        // =========================================================================
+        // CONFIGURAÇÃO DO SEU PROJETO FIREBASE (igreja-getsemani)
         const firebaseConfig = {
-            apiKey: "COLE_SUA_API_KEY_AQUI",
-            authDomain: "SEU_PROJETO.firebaseapp.com",
-            projectId: "SEU_PROJECT_ID_AQUI",
-            storageBucket: "SEU_PROJETO.appspot.com",
-            messagingSenderId: "000000000000",
-            appId: "1:000000000000:web:000000000000"
+            apiKey: "AIzaSyBH6h82AZUwyZHGKIV84TV9uDNd0lK29wk",
+            authDomain: "igreja-getsemani-da91d.firebaseapp.com",
+            projectId: "igreja-getsemani-da91d",
+            storageBucket: "igreja-getsemani-da91d.firebasestorage.app",
+            messagingSenderId: "536420298559",
+            appId: "1:536420298559:web:51c35f79e1c85de0ea6d8a"
         };
 
         let db = null;
         let isCloudActive = false;
 
         try {
-            if (firebaseConfig.apiKey !== "COLE_SUA_API_KEY_AQUI") {
-                firebase.initializeApp(firebaseConfig);
-                db = firebase.firestore();
-                isCloudActive = true;
-            }
+            firebase.initializeApp(firebaseConfig);
+            db = firebase.firestore();
+            isCloudActive = true;
         } catch (err) {
             console.error("Erro ao iniciar Firebase:", err);
         }
@@ -1365,7 +1361,6 @@
             if (isCloudActive && db) {
                 const docRef = db.collection('igreja_getsemani').doc('dados_gerais');
 
-                // Escuta mudanças ao vivo de qualquer celular ou computador
                 docRef.onSnapshot((doc) => {
                     if (doc.exists) {
                         const cloudData = doc.data();
@@ -1378,7 +1373,6 @@
                         state.lembretes = cloudData.lembretes || [];
                         state.history = cloudData.history || [];
 
-                        // Atualiza usuário logado caso a foto/perfil tenha mudado em outro aparelho
                         if (state.currentUser) {
                             const updatedUser = state.users.find(u => u.username === state.currentUser.username);
                             if (updatedUser) {
@@ -1389,7 +1383,6 @@
                             renderAllViews();
                         }
                     } else {
-                        // Primeiro acesso: cria o documento zerado na nuvem
                         saveData();
                     }
 
@@ -1398,25 +1391,11 @@
                 }, (error) => {
                     console.error("Erro na escuta em tempo real:", error);
                     syncBadge.className = 'sync-badge offline';
-                    syncBadge.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> <span>Erro na Nuvem</span>';
+                    syncBadge.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> <span>Ative o Firestore no Console</span>';
                 });
-            } else {
-                // Fallback local caso ainda não tenha colado a chave do Firebase
-                state.users = JSON.parse(localStorage.getItem('gets_users')) || [...DEFAULT_USERS];
-                state.saldoPermanente = parseFloat(localStorage.getItem('gets_saldo_perm')) || 0;
-                state.transactions = JSON.parse(localStorage.getItem('gets_trans')) || [];
-                state.patrimonio = JSON.parse(localStorage.getItem('gets_patrimonio')) || [];
-                state.membros = JSON.parse(localStorage.getItem('gets_membros')) || [];
-                state.celulas = JSON.parse(localStorage.getItem('gets_celulas')) || [];
-                state.lembretes = JSON.parse(localStorage.getItem('gets_lembretes')) || [];
-                state.history = JSON.parse(localStorage.getItem('gets_history')) || [];
-
-                syncBadge.className = 'sync-badge offline';
-                syncBadge.innerHTML = '<i class="fa-solid fa-hard-drive"></i> <span>Modo Local (Configure o Firebase)</span>';
             }
         }
 
-        // SALVA NA NUVEM (E REPLICA AUTOMATICAMENTE PARA TODOS OS APARELHOS)
         function saveData() {
             const payload = {
                 users: state.users,
@@ -1432,16 +1411,7 @@
 
             if (isCloudActive && db) {
                 db.collection('igreja_getsemani').doc('dados_gerais').set(payload)
-                    .catch(err => alert("Erro ao salvar na nuvem: " + err.message));
-            } else {
-                localStorage.setItem('gets_users', JSON.stringify(state.users));
-                localStorage.setItem('gets_saldo_perm', state.saldoPermanente.toString());
-                localStorage.setItem('gets_trans', JSON.stringify(state.transactions));
-                localStorage.setItem('gets_patrimonio', JSON.stringify(state.patrimonio));
-                localStorage.setItem('gets_membros', JSON.stringify(state.membros));
-                localStorage.setItem('gets_celulas', JSON.stringify(state.celulas));
-                localStorage.setItem('gets_lembretes', JSON.stringify(state.lembretes));
-                localStorage.setItem('gets_history', JSON.stringify(state.history));
+                    .catch(err => alert("Atenção: Ative o Firestore Database no Firebase Console em Modo de Teste. Detalhe: " + err.message));
             }
             updateDashboard();
         }
@@ -1507,7 +1477,6 @@
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    // Redimensiona a imagem para não ultrapassar o limite do banco em nuvem
                     const img = new Image();
                     img.onload = function() {
                         const canvas = document.createElement('canvas');
